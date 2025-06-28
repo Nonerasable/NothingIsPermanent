@@ -8,6 +8,7 @@ public class LevelController : MonoBehaviour {
 
     public Action OnGameOver;
     public Action OnLevelWin;
+    public Action<int> OnLevelProgressUpdated;
     public Action<float> OnTimeUpdated;
     
     private bool _isLevelStarted = false;
@@ -15,10 +16,17 @@ public class LevelController : MonoBehaviour {
     private LevelSettings _currentLevelSettings;
     private float _currentLevelTime = 0f;
     private int _currentLevelProgress = 0;
+    private List<DestructibleObject> _destructibleObjects = new();
     
     public void SetupLevel(int levelIndex) {
+        foreach (var destructibleObject in _destructibleObjects) {
+            destructibleObject.OnBeforeDestroy -= HandleObjectDestroyed;
+        }
+        _destructibleObjects.Clear();
         _currentLevelIndex = levelIndex;
         _currentLevelSettings = levelSettings[levelIndex];
+        _currentLevelProgress = 0;
+        OnLevelProgressUpdated?.Invoke(_currentLevelProgress);
     }
 
     public LevelSettings GetCurrentLevelSettings() {
@@ -40,6 +48,11 @@ public class LevelController : MonoBehaviour {
 
     public void IncreaseLevelProgress(int objectValue) {
         _currentLevelProgress += objectValue;
+    }
+
+    public void AddDestructibleObject(DestructibleObject destructibleObject) {
+        _destructibleObjects.Add(destructibleObject);
+        destructibleObject.OnBeforeDestroy += HandleObjectDestroyed;
     }
 
     private void Update() {
@@ -66,5 +79,10 @@ public class LevelController : MonoBehaviour {
 
     private void GameOver() {
         OnGameOver?.Invoke();
+    }
+
+    private void HandleObjectDestroyed() {
+        _currentLevelProgress += 1;
+        OnLevelProgressUpdated?.Invoke(_currentLevelProgress);
     }
 }

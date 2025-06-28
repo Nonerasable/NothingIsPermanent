@@ -1,7 +1,7 @@
 using UnityEngine;
 
-public class PlayerPanel : MonoBehaviour
-{
+public class PlayerPanel : MonoBehaviour {
+    [SerializeField] TMPro.TextMeshProUGUI _levelProgressTextfield;
     [SerializeField] TMPro.TextMeshProUGUI _levelTimeTextfield;
     [SerializeField] private Color _normalColor;
     [SerializeField] private Color _noTimeColor;
@@ -16,5 +16,9 @@ public class PlayerPanel : MonoBehaviour
         var minutes = (int)(time / 60);
         var seconds = (int)(time % 60);
         _levelTimeTextfield.text = $"{minutes:D2}:{seconds:D2}";
+    }
+
+    public void UpdateLevelProgress(int levelProgress, int levelGoal) {
+        _levelProgressTextfield.text = $"{levelProgress} / {levelGoal}";
     }
 }

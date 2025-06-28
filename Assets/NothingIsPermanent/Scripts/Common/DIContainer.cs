@@ -10,6 +10,7 @@ public class DIContainer : MonoBehaviour {
     
     public static DIContainer Inst => _inst;
     public InputSystem_Actions Actions => _actions;
+    public LevelController LevelController => _levelController;
     
     private static DIContainer _inst;
     private InputSystem_Actions _actions;
@@ -27,6 +28,7 @@ public class DIContainer : MonoBehaviour {
         _levelController.OnTimeUpdated += HandleTimeUpdate;
         _levelController.OnGameOver += HandleGameOver;
         _levelController.OnLevelWin += HandleGameWin;
+        _levelController.OnLevelProgressUpdated += HandleLevelProgressUpdated;
     }
 
     public void ShowLevelInfo(int levelIndex) {
@@ -56,7 +58,12 @@ public class DIContainer : MonoBehaviour {
     }
 
     public void StartNextLevel() {
-        var sceneName = _levelController.GetNextLevelSettings().LevelSceneName;
+        var nextLevelSettings = _levelController.GetNextLevelSettings();
+        if (nextLevelSettings == null) {
+            LoadMainMenu();
+            return;
+        }
+        var sceneName = nextLevelSettings.LevelSceneName;
         SceneManager.LoadScene(sceneName);
     }
 
@@ -81,5 +88,13 @@ public class DIContainer : MonoBehaviour {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         _currentUiCanvas.ShowWinLevelPanel();
+    }
+
+    private void HandleLevelProgressUpdated(int levelProgress) {
+        var levelSettings = _levelController.GetCurrentLevelSettings();
+        if (levelSettings == null) {
+            return;
+        }
+        _currentUiCanvas.UpdateProgress(levelProgress, levelSettings.LevelGoal);
     }
 }

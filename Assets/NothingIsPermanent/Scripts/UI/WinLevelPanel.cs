@@ -1,16 +1,21 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class WinLevelPanel : MonoBehaviour
-{
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+public class WinLevelPanel : MonoBehaviour {
+    
+    [SerializeField] private Button _mainMenuButton;
+    [SerializeField] private Button _nextLevelButton;
+
+    private void Awake() {
+        _mainMenuButton.onClick.AddListener(LoadMainMenu);
+        _nextLevelButton.onClick.AddListener(GoToNextLevel);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void LoadMainMenu() {
+        DIContainer.Inst.LoadMainMenu();
+    }
+
+    private void GoToNextLevel() {
+        DIContainer.Inst.StartNextLevel();
     }
 }

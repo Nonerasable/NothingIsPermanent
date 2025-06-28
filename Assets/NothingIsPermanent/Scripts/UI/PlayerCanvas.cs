@@ -30,6 +30,10 @@ public class PlayerCanvas : MonoBehaviour {
         _playerPanel.UpdateTime(time);
     }
 
+    public void UpdateProgress(int progress, int goal) {
+        _playerPanel.UpdateLevelProgress(progress, goal);
+    }
+
     public void ShowGameOverPanel() {
         _gameOverPanel.gameObject.SetActive(true);
     }
