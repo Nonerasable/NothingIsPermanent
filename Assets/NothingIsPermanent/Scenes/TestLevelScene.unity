@@ -446,9 +446,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4635875053500356768, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
+      propertyPath: _finalDissolveThreshold
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5084136266699417937, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
+      propertyPath: _finalDissolveThreshold
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5461133997170380109, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
+      propertyPath: _finalDissolveThreshold
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 7368071763393317716, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
       propertyPath: m_Name
       value: table (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8398502178102140561, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
+      propertyPath: _finalDissolveThreshold
+      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -503,9 +519,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4635875053500356768, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
+      propertyPath: _finalDissolveThreshold
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5084136266699417937, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
+      propertyPath: _finalDissolveThreshold
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5461133997170380109, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
+      propertyPath: _finalDissolveThreshold
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 7368071763393317716, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
       propertyPath: m_Name
       value: table (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8398502178102140561, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
+      propertyPath: _finalDissolveThreshold
+      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -674,9 +706,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4635875053500356768, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
+      propertyPath: _finalDissolveThreshold
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5084136266699417937, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
+      propertyPath: _finalDissolveThreshold
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5461133997170380109, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
+      propertyPath: _finalDissolveThreshold
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 7368071763393317716, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
       propertyPath: m_Name
       value: table
+      objectReference: {fileID: 0}
+    - target: {fileID: 8398502178102140561, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
+      propertyPath: _finalDissolveThreshold
+      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

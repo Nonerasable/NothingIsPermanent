@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class MicrobeController : MonoBehaviour {
     [SerializeField] private List<MicrobeSettings> _microbeSettings;
+    [SerializeField] private GameObject _microbePrefab;
 
     private List<List<Microbe>> _microbesByMaterial = new();
+    private List<GameObject> _microbes = new();
 
     public void StartPartDestruction(DestructiblePart part, Vector3 startPoint) {
         foreach (Microbe microbe in _microbesByMaterial[0]) {
@@ -23,8 +25,19 @@ public class MicrobeController : MonoBehaviour {
         }
         
         foreach (MicrobeSettings settings in _microbeSettings) {
-            Microbe microbe = new Microbe(settings.destructionSpeed, settings.MaxAffectedMaterial);
-            _microbesByMaterial[(int)settings.MaxAffectedMaterial].Add(microbe);
+            GameObject microbe = Instantiate(_microbePrefab);
+            _microbes.Add(microbe);
+            
+            Microbe microbeScript = microbe.GetComponent<Microbe>();
+            microbeScript.Init(settings.destructionSpeed, settings.MaxAffectedMaterial);
+            
+            _microbesByMaterial[(int)settings.MaxAffectedMaterial].Add(microbeScript);
+        }
+    }
+
+    private void OnDestroy() {
+        foreach (GameObject microbe in _microbes) {
+            Destroy(microbe);
         }
     }
 }
