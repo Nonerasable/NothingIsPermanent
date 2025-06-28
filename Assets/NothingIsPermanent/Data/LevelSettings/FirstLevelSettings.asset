@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c192124930a4bf64aa667ea3d1fbd0d9, type: 3}
+  m_Name: FirstLevelSettings
+  m_EditorClassIdentifier: 
+  LevelTime: 10
+  LevelGoal: 8
+  StartLevelDescription: "Level 1:  I\u2019ve invented a microbe. Now it\u2019s time
+    to test it. It\u2019s supposed to eat all the wooden objects in my room. Hopefully,
+    everything goes according to plan. I\u2019ll start the timer \u2014 I\u2019ve
+    got two minutes to finish the job."
+  LevelSceneName: FirstLevelScene

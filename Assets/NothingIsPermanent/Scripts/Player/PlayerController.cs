@@ -20,10 +20,6 @@ public class PlayerController : MonoBehaviour
     void Start() {
         _actions = DIContainer.Inst.Actions.Player;
         _characterController = GetComponent<CharacterController>();
-
-        // Lock cursor
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     void Update()

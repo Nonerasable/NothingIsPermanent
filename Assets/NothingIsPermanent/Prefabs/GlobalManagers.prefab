@@ -9,7 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4570912712765386620}
+  - component: {fileID: 5960293886463449598}
   - component: {fileID: 6890903234522159170}
+  - component: {fileID: 7845277249390947067}
   m_Layer: 0
   m_Name: GlobalManagers
   m_TagString: Untagged
@@ -32,6 +34,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5960293886463449598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6465926218315797413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7032038266861a342baf8ecf2bc58a37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelSceneNames:
+  - FirstLevelScene
+  - SecondLevelScene
+  - ThirdLevelScene
 --- !u!114 &6890903234522159170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,4 +63,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerUICanvasPrefab: {fileID: 5226767943606923436, guid: 3e754b20936be9f44934e9f64a20705a, type: 3}
+  _levelController: {fileID: 7845277249390947067}
   _isPlayerScene: 1
+  _mainMenuSceneName: MainMenuScene
+--- !u!114 &7845277249390947067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6465926218315797413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948cb9cafaf8db240bc9b8b855a6b0a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelSettings:
+  - {fileID: 11400000, guid: 2d2a27b187d4bac42a138c1963d26d40, type: 2}
+  - {fileID: 11400000, guid: 840331f7fbed3a245ac86621f3d03aa4, type: 2}
+  - {fileID: 11400000, guid: 28cbdd875a82aba449ba0b761d5e866b, type: 2}
