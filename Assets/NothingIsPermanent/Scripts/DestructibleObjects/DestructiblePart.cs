@@ -154,6 +154,6 @@ public class DestructiblePart : MonoBehaviour {
 
     private void DestroyPart() {
         OnBeforeDestroy?.Invoke();
-        
+        Destroy(gameObject);
     }
 }

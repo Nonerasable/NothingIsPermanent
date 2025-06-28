@@ -16,6 +16,10 @@ public class DissolveObject : MonoBehaviour
     private void Awake() {
         _renderer = GetComponent<Renderer>();
     }
+
+    private void Start() {
+        _renderer.material = dissolveMat;
+    }
     
     public void StartDestroy(Vector3 hitPoint) {
         var mat = _renderer.material;

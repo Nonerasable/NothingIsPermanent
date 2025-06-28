@@ -17,12 +17,10 @@ public class HitController : MonoBehaviour {
             DestructiblePart part = hit.collider.GetComponent<DestructiblePart>();
             if (part) {
                 part.StartDestruction(hit.point);
+                
+                Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 3.0f);
+                Debug.Log("Попал в: " + hit.collider.name);
             }
-            var dissolveObject = hit.collider.GetComponent<DissolveObject>();
-            dissolveObject.StartDestroy(hit.point);
-            
-            Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 3.0f);
-            Debug.Log("Попал в: " + hit.collider.name);
         }
         else {
             Debug.DrawRay(ray.origin, ray.direction * 100f, Color.green, 3.0f);
