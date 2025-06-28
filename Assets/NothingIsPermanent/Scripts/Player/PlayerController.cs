@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     private InputSystem_Actions.PlayerActions _actions;
 
     void Start() {
-        _actions = InputActionsProvider.Inst.Actions.Player;
+        _actions = DIContainer.Inst.Actions.Player;
         _characterController = GetComponent<CharacterController>();
 
         // Lock cursor
