@@ -2,7 +2,15 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(MicrobeController))]
 public class HitController : MonoBehaviour {
+
+    private MicrobeController _microbeController;
+
+    void Start() {
+        _microbeController = GetComponent<MicrobeController>();
+    }
+    
     void Update() {
         if (Input.GetKeyDown(KeyCode.Mouse0)) {
             DoHit();
@@ -16,7 +24,7 @@ public class HitController : MonoBehaviour {
         if (Physics.Raycast(ray, out RaycastHit hit, 100f)) {
             DestructiblePart part = hit.collider.GetComponent<DestructiblePart>();
             if (part) {
-                part.StartDestruction(hit.point);
+                _microbeController.StartPartDestruction(part, hit.point);
                 
                 Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 3.0f);
                 Debug.Log("Попал в: " + hit.collider.name);

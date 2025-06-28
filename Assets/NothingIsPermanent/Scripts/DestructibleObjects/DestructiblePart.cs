@@ -19,7 +19,8 @@ public class DestructiblePart : MonoBehaviour {
 
     private MeshFilter _meshFilter;
     private DissolveObject _dissolveObject;
-    
+
+    private DestructibleObject _destructibleObject;
     private DestructiblePartState state = DestructiblePartState.NONE;
     private float _currentDestructionRadius = 0;
     private Vector3 _destructionStartPointLcs;
@@ -27,6 +28,28 @@ public class DestructiblePart : MonoBehaviour {
     private List<DestructiblePart> _attachedParts = new();
     private FixedJoint _joint;
 
+    public bool IsBeingDestroyed => state != DestructiblePartState.NONE;
+    
+    public void SetDestructibleObject(DestructibleObject dstrObject) {
+        _destructibleObject = dstrObject;
+    }
+    
+    public DestructiblePart GetNextPartToDestroy() {
+        if (_attachedTo && !IsBeingDestroyed) {
+            return _attachedTo;
+        }
+
+        foreach (DestructiblePart attachedPart in _attachedParts) {
+            if (attachedPart.IsBeingDestroyed) {
+                continue;
+            }
+
+            return attachedPart;
+        }
+
+        return _destructibleObject.GetNextPartToDestroy();
+    }
+    
     public void RegisterAttachedPart(DestructiblePart part) {
         _attachedParts.Add(part);
     }
