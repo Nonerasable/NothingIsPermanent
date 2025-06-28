@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 public class DestructibleObject : MonoBehaviour {
+    
     public Action OnBeforeDestroy;
     
     private List<DestructiblePart> _allParts = new();
@@ -29,6 +30,7 @@ public class DestructibleObject : MonoBehaviour {
             partToSub.SetDestructibleObject(this);
             part.OnBeforeDestroy += () => HandleRemovePart(partToSub);
         }
+        DIContainer.Inst.LevelController.AddDestructibleObject(this);
     }
 
     private void HandleRemovePart(DestructiblePart part) {
