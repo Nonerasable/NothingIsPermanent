@@ -406,10 +406,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3948158168175907968, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
-      propertyPath: _destroySpeedPerSecond
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 4166307100218145098, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.85
@@ -467,10 +463,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3948158168175907968, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
-      propertyPath: _destroySpeedPerSecond
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 4166307100218145098, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.71
@@ -642,10 +634,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3948158168175907968, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
-      propertyPath: _destroySpeedPerSecond
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 4166307100218145098, guid: fc189fbc11041994f8ec528d1f9e11ae, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.71

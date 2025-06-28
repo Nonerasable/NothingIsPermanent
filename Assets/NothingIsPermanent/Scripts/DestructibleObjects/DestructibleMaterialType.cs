@@ -1,5 +1,5 @@
 ﻿
-enum DestructibleMaterialType 
+public enum DestructibleMaterialType 
 {
     WOOD,
     METAL,
