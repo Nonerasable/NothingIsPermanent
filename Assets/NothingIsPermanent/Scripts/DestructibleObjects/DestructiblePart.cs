@@ -5,13 +5,15 @@ using UnityEngine;
 enum DestructiblePartState {
     NONE,
     BEING_DESTROYED,
-    FINAL_DISSOLVE
+    FINAL_DISSOLVE,
+    WAITING_FOR_DESTROY
 }
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(DissolveObject))]
 public class DestructiblePart : MonoBehaviour {
     public Action OnBeforeDestroy;
+    public Action OnStartJumpOf;
     
     [SerializeField] private DestructibleMaterialType _materialType;
     [SerializeField] private DestructiblePart _attachedTo;
@@ -32,6 +34,10 @@ public class DestructiblePart : MonoBehaviour {
     
     public void SetDestructibleObject(DestructibleObject dstrObject) {
         _destructibleObject = dstrObject;
+    }
+
+    public void SetWaitingForDestroy() {
+        state = DestructiblePartState.WAITING_FOR_DESTROY;
     }
     
     public DestructiblePart GetNextPartToDestroy() {
@@ -55,7 +61,7 @@ public class DestructiblePart : MonoBehaviour {
     }
 
     public void StartDestruction(Vector3 destructionStartPointWcs) {
-        if (state != DestructiblePartState.NONE) {
+        if (state != DestructiblePartState.NONE && state != DestructiblePartState.WAITING_FOR_DESTROY) {
             return;
         }
         _destructionStartPointLcs = transform.InverseTransformPoint(destructionStartPointWcs);
@@ -67,6 +73,8 @@ public class DestructiblePart : MonoBehaviour {
     private void Awake() {
         _meshFilter = GetComponent<MeshFilter>();
         _dissolveObject = GetComponent<DissolveObject>();
+
+        _dissolveObject.OnFinalDissolveThreshold += RaiseJumpOff;
     }
 
     private void Start() {
@@ -84,8 +92,9 @@ public class DestructiblePart : MonoBehaviour {
         if (_attachedTo) {
             _attachedTo.OnBeforeDestroy -= HandleParentObjectDestroyed;
         }
-        
         _attachedParts.Clear();
+
+        _dissolveObject.OnFinalDissolveThreshold -= RaiseJumpOff;
     }
 
     private void Update() {
@@ -106,6 +115,8 @@ public class DestructiblePart : MonoBehaviour {
                 if (_dissolveObject.IsFullyDissolved) {
                     DestroyPart();
                 }
+                break;
+            case DestructiblePartState.WAITING_FOR_DESTROY:
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -136,6 +147,10 @@ public class DestructiblePart : MonoBehaviour {
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(startPointWcs, _currentDestructionRadius);   
         }
+    }
+
+    private void RaiseJumpOff() {
+        OnStartJumpOf?.Invoke();
     }
 
     private bool AreBoundsInsideDestructionSphere() {
