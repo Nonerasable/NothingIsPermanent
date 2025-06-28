@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(DissolveObject))]
 public class DestructiblePart : MonoBehaviour {
     public Action OnBeforeDestroy;
     
@@ -11,6 +12,7 @@ public class DestructiblePart : MonoBehaviour {
     [SerializeField] [Min(0.1f)] private float _destroySpeedPerSecond = 1;
 
     private MeshFilter _meshFilter;
+    private DissolveObject _dissolveObject;
     
     private bool _isBeingDestroyed = false;
     private float _currentDestructionRadius = 0;
@@ -26,10 +28,13 @@ public class DestructiblePart : MonoBehaviour {
     public void StartDestruction(Vector3 destructionStartPointWcs) {
         _destructionStartPointLcs = transform.InverseTransformPoint(destructionStartPointWcs);
         _isBeingDestroyed = true;
+        
+        _dissolveObject.StartDestroy(destructionStartPointWcs);
     }
 
     private void Awake() {
         _meshFilter = GetComponent<MeshFilter>();
+        _dissolveObject = GetComponent<DissolveObject>();
     }
 
     private void Start() {
@@ -57,11 +62,13 @@ public class DestructiblePart : MonoBehaviour {
         }
 
         _currentDestructionRadius += Time.deltaTime * _destroySpeedPerSecond;
+        _dissolveObject.SetDissolveRadius(_currentDestructionRadius);
         if (!AreBoundsInsideDestructionSphere()) {
             return;
         }
 
         DestroyPart();
+        _isBeingDestroyed = false;
     }
 
     private void OnDrawGizmos() {
@@ -129,6 +136,6 @@ public class DestructiblePart : MonoBehaviour {
 
     private void DestroyPart() {
         OnBeforeDestroy?.Invoke();
-        Destroy(gameObject);
+        _dissolveObject.DestroyObject();
     }
 }

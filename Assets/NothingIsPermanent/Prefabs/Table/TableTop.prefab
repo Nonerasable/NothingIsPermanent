@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1332784532476066519}
   - component: {fileID: 236776572344754861}
   - component: {fileID: 4958441106547801829}
+  - component: {fileID: 4164879034979788584}
   m_Layer: 0
   m_Name: TableTop
   m_TagString: Untagged
@@ -67,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 45cf78133ce0c164ebe4537cf2e5aa2d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -150,5 +151,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _materialType: 0
-  _health: 10
+  _attachedTo: {fileID: 0}
   _destroySpeedPerSecond: 5
+--- !u!114 &4164879034979788584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7154668332956799940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b496f955833ace4188bf676f89e96c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dissolveMat: {fileID: 2100000, guid: 45cf78133ce0c164ebe4537cf2e5aa2d, type: 2}
+  dissolveFinishMat: {fileID: 2100000, guid: 64c98047f6df49849a5c16a7caa7d5e7, type: 2}

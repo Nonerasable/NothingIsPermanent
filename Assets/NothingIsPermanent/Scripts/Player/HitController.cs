@@ -14,6 +14,10 @@ public class HitController : MonoBehaviour {
         var ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         
         if (Physics.Raycast(ray, out RaycastHit hit, 100f)) {
+            DestructiblePart part = hit.collider.GetComponent<DestructiblePart>();
+            if (part) {
+                part.StartDestruction(hit.point);
+            }
             var dissolveObject = hit.collider.GetComponent<DissolveObject>();
             dissolveObject.StartDestroy(hit.point);
             

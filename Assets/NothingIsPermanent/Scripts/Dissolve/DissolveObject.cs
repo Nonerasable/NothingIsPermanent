@@ -17,18 +17,13 @@ public class DissolveObject : MonoBehaviour
         var mat = _renderer.material;
         mat.SetVector("_HitPoint", hitPoint);
         mat.SetFloat("_Radius", 0);
-        StartCoroutine(ExpandDissolve(mat));
     }
-    
-    IEnumerator ExpandDissolve(Material mat)
-    {
-        float radius = 0;
-        while (radius < 3.0f) // допустим, радиус максимум 3
-        {
-            radius += Time.deltaTime * 0.5f;
-            mat.SetFloat("_Radius", radius);
-            yield return null;
-        }
+
+    public void SetDissolveRadius(float radius) {
+        _renderer.material.SetFloat("_Radius", radius);
+    }
+
+    public void DestroyObject() {
         StartCoroutine(DissolveAndDestroy());
     }
     
@@ -36,10 +31,11 @@ public class DissolveObject : MonoBehaviour
         _renderer.material = dissolveFinishMat;
         var mat = _renderer.material;
         float t = 0;
-        while (t < 3.0f)
+        const float time = 3f;
+        while (t < time)
         {
             t += Time.deltaTime;
-            float progress = Mathf.Clamp01(t / 3.0f);
+            float progress = Mathf.Clamp01(t / time);
             mat.SetFloat("_Progress", progress);
             yield return null;
         }
