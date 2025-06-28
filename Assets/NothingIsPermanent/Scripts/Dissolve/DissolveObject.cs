@@ -6,13 +6,17 @@ public class DissolveObject : MonoBehaviour
 {
     [SerializeField] Material dissolveMat;
     [SerializeField] Material dissolveFinishMat;
+    [SerializeField] [Min(0.01f)] private float _finalDissolveTime = 0.8f;
 
+    public bool IsFullyDissolved => _isFullyDissolved;
+    
     private Renderer _renderer;
+    private bool _isFullyDissolved = false;
 
     private void Awake() {
         _renderer = GetComponent<Renderer>();
     }
-
+    
     public void StartDestroy(Vector3 hitPoint) {
         var mat = _renderer.material;
         mat.SetVector("_HitPoint", hitPoint);
@@ -23,7 +27,7 @@ public class DissolveObject : MonoBehaviour
         _renderer.material.SetFloat("_Radius", radius);
     }
 
-    public void DestroyObject() {
+    public void StartFinalDissolve() {
         StartCoroutine(DissolveAndDestroy());
     }
     
@@ -31,15 +35,14 @@ public class DissolveObject : MonoBehaviour
         _renderer.material = dissolveFinishMat;
         var mat = _renderer.material;
         float t = 0;
-        const float time = 3f;
-        while (t < time)
+        while (t < _finalDissolveTime)
         {
             t += Time.deltaTime;
-            float progress = Mathf.Clamp01(t / time);
+            float progress = Mathf.Clamp01(t / _finalDissolveTime);
             mat.SetFloat("_Progress", progress);
             yield return null;
         }
 
-        Destroy(gameObject);
+        _isFullyDissolved = true;
     }
 }

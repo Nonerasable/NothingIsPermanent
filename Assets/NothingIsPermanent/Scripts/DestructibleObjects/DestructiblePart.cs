@@ -2,6 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+enum DestructiblePartState {
+    NONE,
+    BEING_DESTROYED,
+    FINAL_DISSOLVE
+}
+
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(DissolveObject))]
 public class DestructiblePart : MonoBehaviour {
@@ -14,7 +20,7 @@ public class DestructiblePart : MonoBehaviour {
     private MeshFilter _meshFilter;
     private DissolveObject _dissolveObject;
     
-    private bool _isBeingDestroyed = false;
+    private DestructiblePartState state = DestructiblePartState.NONE;
     private float _currentDestructionRadius = 0;
     private Vector3 _destructionStartPointLcs;
     
@@ -26,8 +32,11 @@ public class DestructiblePart : MonoBehaviour {
     }
 
     public void StartDestruction(Vector3 destructionStartPointWcs) {
+        if (state != DestructiblePartState.NONE) {
+            return;
+        }
         _destructionStartPointLcs = transform.InverseTransformPoint(destructionStartPointWcs);
-        _isBeingDestroyed = true;
+        state = DestructiblePartState.BEING_DESTROYED;
         
         _dissolveObject.StartDestroy(destructionStartPointWcs);
     }
@@ -57,18 +66,27 @@ public class DestructiblePart : MonoBehaviour {
     }
 
     private void Update() {
-        if (!_isBeingDestroyed) {
-            return;
-        }
+        switch (state) {
+            case DestructiblePartState.NONE:
+                return;
+            case DestructiblePartState.BEING_DESTROYED:
+                _currentDestructionRadius += Time.deltaTime * _destroySpeedPerSecond;
+                _dissolveObject.SetDissolveRadius(_currentDestructionRadius);
+                if (!AreBoundsInsideDestructionSphere()) {
+                    return;
+                }
 
-        _currentDestructionRadius += Time.deltaTime * _destroySpeedPerSecond;
-        _dissolveObject.SetDissolveRadius(_currentDestructionRadius);
-        if (!AreBoundsInsideDestructionSphere()) {
-            return;
+                state = DestructiblePartState.FINAL_DISSOLVE;
+                _dissolveObject.StartFinalDissolve();
+                break;
+            case DestructiblePartState.FINAL_DISSOLVE:
+                if (_dissolveObject.IsFullyDissolved) {
+                    DestroyPart();
+                }
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
-
-        DestroyPart();
-        _isBeingDestroyed = false;
     }
 
     private void OnDrawGizmos() {
@@ -88,7 +106,7 @@ public class DestructiblePart : MonoBehaviour {
             Gizmos.DrawSphere(vertex, 0.05f);            
         }
 
-        if (_isBeingDestroyed) {
+        if (state == DestructiblePartState.BEING_DESTROYED) {
             Gizmos.color = Color.blue;
             Gizmos.DrawSphere(startPointWcs, 0.05f);
             
@@ -136,6 +154,6 @@ public class DestructiblePart : MonoBehaviour {
 
     private void DestroyPart() {
         OnBeforeDestroy?.Invoke();
-        _dissolveObject.DestroyObject();
+        
     }
 }
