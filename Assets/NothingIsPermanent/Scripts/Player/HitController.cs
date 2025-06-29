@@ -37,8 +37,16 @@ public class HitController : MonoBehaviour {
         _actions = DIContainer.Inst.Actions.Player;
         _microbeController = GetComponent<MicrobeController>();
         DIContainer.Inst.ChangeMicrobe(_currentUsableMicrobe);
+
+        _actions.Attack.started += TryStartDestroy;
+        _actions.Interact.started += TryCollectMicrobe;
     }
-    
+
+    private void OnDestroy() {
+        _actions.Attack.performed -= TryStartDestroy;
+        _actions.Interact.performed -= TryCollectMicrobe;
+    }
+
     void Update() {
         Vector3 cameraPos = Camera.main.transform.position;
         Vector3 cameraForward = Camera.main.transform.forward;
@@ -67,17 +75,9 @@ public class HitController : MonoBehaviour {
             _currentUsableMicrobe = closestMicrobe;
             DIContainer.Inst.ChangeMicrobe(_currentUsableMicrobe);
         }
-
-        if (closestMicrobe && _actions.Interact.WasPressedThisFrame()) {
-            _microbeController.CollectMicrobe(closestMicrobe);
-        }
-
-        if (_actions.Attack.WasPressedThisFrame()) {
-            DoHit();
-        }
     }
     
-    void DoHit() {
+    private void TryStartDestroy(InputAction.CallbackContext obj) {
         var cam = Camera.main;
         var ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         
@@ -93,5 +93,13 @@ public class HitController : MonoBehaviour {
         else {
             Debug.DrawRay(ray.origin, ray.direction * 100f, Color.green, 3.0f);
         }
+    }
+    
+    private void TryCollectMicrobe(InputAction.CallbackContext obj) {
+        if (!_currentUsableMicrobe) {
+            return;
+        }
+        
+        _microbeController.CollectMicrobe(_currentUsableMicrobe);
     }
 }

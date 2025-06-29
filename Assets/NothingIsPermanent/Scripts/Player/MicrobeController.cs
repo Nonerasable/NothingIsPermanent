@@ -10,22 +10,27 @@ public class MicrobeController : MonoBehaviour {
     private List<List<Microbe>> _microbesByMaterial = new();
     private List<GameObject> _microbes = new();
 
-    private Material _flastMaterial;
+    private DestructibleMaterialType _currentMicrobeType = DestructibleMaterialType.WOOD;
+
+    private Material _flaskMaterial;
 
     public void CollectMicrobe(Microbe microbe) {
-        microbe.IsCollected = true;
+        microbe.Collect();
         DIContainer.Inst.ChangeMicrobeCollection(microbe.MaxAffectedMaterial, _microbesByMaterial[(int)microbe.MaxAffectedMaterial]);
     }
     
     public void StartPartDestruction(DestructiblePart part, Vector3 startPoint) {
-        foreach (Microbe microbe in _microbesByMaterial[0]) {
+        if (part.IsBeingDestroyed) {
+            return;
+        }
+        foreach (Microbe microbe in _microbesByMaterial[(int)_currentMicrobeType]) {
             if (!microbe.IsCollected) {
                 continue;
             }
             
             microbe.StartDestruction(part, startPoint);
-            microbe.IsCollected = false;
             DIContainer.Inst.ChangeMicrobeCollection(microbe.MaxAffectedMaterial, _microbesByMaterial[(int)microbe.MaxAffectedMaterial]);
+            break;
         }
     }
     
@@ -41,7 +46,7 @@ public class MicrobeController : MonoBehaviour {
             
                 Microbe microbeScript = microbe.GetComponent<Microbe>();
                 microbeScript.Init(settings.destructionSpeed, settings.MaxAffectedMaterial);
-                microbeScript.IsCollected = true;
+                microbeScript.Collect();
             
                 _microbesByMaterial[(int)settings.MaxAffectedMaterial].Add(microbeScript);
             }
@@ -50,13 +55,25 @@ public class MicrobeController : MonoBehaviour {
         MeshRenderer flaskRenderer = _flask.GetComponent<MeshRenderer>();
         foreach (Material material in flaskRenderer.materials) {
             if (material.name.Contains("LiquidFilled")) {
-                _flastMaterial = material;
+                _flaskMaterial = material;
                 break;
             }
         }
         
-        var defaultMicrobe = _microbesByMaterial[0][0];
-        DIContainer.Inst.ChangeMicrobeCollection(defaultMicrobe.MaxAffectedMaterial, _microbesByMaterial[(int)defaultMicrobe.MaxAffectedMaterial]);
+        DIContainer.Inst.ChangeMicrobeCollection(_currentMicrobeType, _microbesByMaterial[(int)_currentMicrobeType]);
+    }
+
+    private void Update() {
+        List<Microbe> currentMicrobeCollection = _microbesByMaterial[(int)_currentMicrobeType];
+
+        int microbesCollected = 0;
+        foreach (Microbe microbe in currentMicrobeCollection) {
+            if (microbe.IsCollected) {
+                microbesCollected += 1;
+            }
+        }
+        
+        _flaskMaterial.SetFloat("_Fill", (float)microbesCollected / currentMicrobeCollection.Count);
     }
 
     private void OnDestroy() {

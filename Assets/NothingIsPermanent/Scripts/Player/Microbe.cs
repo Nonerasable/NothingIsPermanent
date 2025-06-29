@@ -8,13 +8,15 @@ public class Microbe : MonoBehaviour {
     [SerializeField] [Min(0.1f)] private float _upwardsForceWhenJumpOff = 0.5f;
 
     public bool IsDestroyingNow => _currentPart;
-    public bool IsCollected { get; set; }
+    public bool IsCollected => _isCollected;
     public DestructibleMaterialType MaxAffectedMaterial => _maxAffectedMaterial;
 
     private Rigidbody _rigidBody;
     private Collider _collider;
+    private MeshRenderer _renderer;
     
     private DestructibleMaterialType _maxAffectedMaterial;
+    private bool _isCollected = true;
     private float _destructionSpeed = 0.5f;
     
     private DestructiblePart _currentPart;
@@ -29,10 +31,24 @@ public class Microbe : MonoBehaviour {
         _maxAffectedMaterial = maxAffectedMaterial;
     }
 
+    public void Collect() {
+        if (_isCollected) {
+            return;
+        }
+
+        _isCollected = true;
+        _rigidBody.isKinematic = true;
+        _collider.enabled = false;
+        _renderer.enabled = false;
+    }
+
     public void StartDestruction(DestructiblePart part, Vector3 destructionPoint, bool needJump = false) {
         Assert.IsNull(_currentPart, $"Already destructing part {_currentPart}, logic error");
         Assert.IsNotNull(part, "Trying to destroy null part");
 
+        _isCollected = false;
+        _renderer.enabled = true;
+        
         _currentPart = part;
 
         if (needJump) {
@@ -51,6 +67,7 @@ public class Microbe : MonoBehaviour {
     private void Start() {
         _rigidBody = GetComponent<Rigidbody>();
         _collider = GetComponent<Collider>();
+        _renderer = GetComponent<MeshRenderer>();
     }
 
     private void OnDestroy() {
