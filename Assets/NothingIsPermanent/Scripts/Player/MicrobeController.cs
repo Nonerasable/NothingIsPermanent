@@ -5,9 +5,12 @@ using UnityEngine;
 public class MicrobeController : MonoBehaviour {
     [SerializeField] private List<MicrobeSettings> _microbeSettings;
     [SerializeField] private GameObject _microbePrefab;
+    [SerializeField] private GameObject _flask;
 
     private List<List<Microbe>> _microbesByMaterial = new();
     private List<GameObject> _microbes = new();
+
+    private Material _flastMaterial;
 
     public void CollectMicrobe(Microbe microbe) {
         microbe.IsCollected = true;
@@ -38,6 +41,14 @@ public class MicrobeController : MonoBehaviour {
             microbeScript.IsCollected = true;
             
             _microbesByMaterial[(int)settings.MaxAffectedMaterial].Add(microbeScript);
+        }
+
+        MeshRenderer flaskRenderer = _flask.GetComponent<MeshRenderer>();
+        foreach (Material material in flaskRenderer.materials) {
+            if (material.name.Contains("LiquidFilled")) {
+                _flastMaterial = material;
+                break;
+            }
         }
     }
 
