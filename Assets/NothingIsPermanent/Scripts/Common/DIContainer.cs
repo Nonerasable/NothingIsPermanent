@@ -9,6 +9,10 @@ public class DIContainer : MonoBehaviour {
     [SerializeField] private LevelController _levelController;
     [SerializeField] private bool _isPlayerScene;
     [SerializeField] private string _mainMenuSceneName;
+
+    public MicrobeColoring microbeColoring;
+
+    public GameObject Player;
     
     public static DIContainer Inst => _inst;
     public InputSystem_Actions Actions => _actions;

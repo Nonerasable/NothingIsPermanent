@@ -7,6 +7,9 @@ public class DestructibleObject : MonoBehaviour {
     public Action OnBeforeDestroy;
     
     private List<DestructiblePart> _allParts = new();
+    private DestructibleMaterialType _maxMaterialType;
+
+    public DestructibleMaterialType MaxMaterialType => _maxMaterialType;
 
     public DestructiblePart GetNextPartToDestroy() {
         foreach (DestructiblePart part in _allParts) {
@@ -25,6 +28,9 @@ public class DestructibleObject : MonoBehaviour {
 
         foreach (DestructiblePart part in _allParts) {
             DestructiblePart partToSub = part;
+            if (part.MaterialType > _maxMaterialType) {
+                _maxMaterialType = part.MaterialType;
+            }
             
             partToSub.SetDestructibleObject(this);
             part.OnBeforeDestroy += () => HandleRemovePart(partToSub);

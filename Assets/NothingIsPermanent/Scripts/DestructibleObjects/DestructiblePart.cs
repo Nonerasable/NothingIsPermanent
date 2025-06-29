@@ -30,7 +30,12 @@ public class DestructiblePart : MonoBehaviour {
     private List<DestructiblePart> _attachedParts = new();
     private FixedJoint _joint;
 
+    public DestructibleMaterialType MaterialType => _materialType;
     public bool IsBeingDestroyed => state != DestructiblePartState.NONE;
+
+    public DestructibleMaterialType GetMaxMaterialInWholeObject() {
+        return _destructibleObject.MaxMaterialType;
+    }
     
     public void SetDestructibleObject(DestructibleObject dstrObject) {
         _destructibleObject = dstrObject;

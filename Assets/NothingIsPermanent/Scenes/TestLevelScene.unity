@@ -552,6 +552,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1867736276700917892, guid: 7f6d91711fde48c4a8aae59b27d54a41, type: 3}
+      propertyPath: _microbeSettings.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1867736276700917892, guid: 7f6d91711fde48c4a8aae59b27d54a41, type: 3}
+      propertyPath: _microbeSettings.Array.data[1].Count
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1867736276700917892, guid: 7f6d91711fde48c4a8aae59b27d54a41, type: 3}
+      propertyPath: _microbeSettings.Array.data[1].destructionSpeed
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1867736276700917892, guid: 7f6d91711fde48c4a8aae59b27d54a41, type: 3}
+      propertyPath: _microbeSettings.Array.data[1].MaxAffectedMaterial
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4059186883748173322, guid: 7f6d91711fde48c4a8aae59b27d54a41, type: 3}
       propertyPath: m_Name
       value: Player
@@ -652,6 +668,66 @@ PrefabInstance:
     - target: {fileID: 6465926218315797413, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
       propertyPath: m_Name
       value: GlobalManagers
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.data[0].color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.data[0].color.b
+      value: 0.029503396
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.data[0].color.g
+      value: 0.4811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.data[0].color.r
+      value: 0.06355302
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.data[1].color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.data[1].color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.data[1].color.g
+      value: 0.12471565
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.data[1].color.r
+      value: 0.735849
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.data[2].color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.data[2].color.b
+      value: 0.7385195
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.data[2].color.g
+      value: 0.3224012
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.data[2].color.r
+      value: 0.990566
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.data[1].material
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6890903234522159170, guid: 0237be3fc2b4c9b49a7e32a97e2ebadd, type: 3}
+      propertyPath: microbeColoring._colorSettings.Array.data[2].material
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

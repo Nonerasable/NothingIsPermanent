@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     void Start() {
         _actions = DIContainer.Inst.Actions.Player;
+        DIContainer.Inst.Player = gameObject;
         _characterController = GetComponent<CharacterController>();
     }
 

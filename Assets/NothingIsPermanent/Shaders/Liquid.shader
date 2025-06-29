@@ -64,7 +64,7 @@ Shader "Custom/NewSurfaceShader"
                 Light mainLight = GetMainLight();
                 float3 normal = normalize(IN.normalWS);
                 float3 lightDir = normalize(mainLight.direction);
-                float NdotL = saturate(dot(normal, -lightDir)); // Свет направлен *вниз*
+                float NdotL = saturate(dot(normal, lightDir)); // Свет направлен *вниз*
 
                 float3 finalColor = _Color.rgb * (0.2 + NdotL * mainLight.color);
                 return float4(finalColor, _Color.a);

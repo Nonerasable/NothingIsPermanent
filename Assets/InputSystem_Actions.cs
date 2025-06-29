@@ -107,6 +107,33 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectMicrobe1"",
+                    ""type"": ""Button"",
+                    ""id"": ""7b24b13e-cb2a-4a71-82ac-c95446c828f5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SelectMicrobe2"",
+                    ""type"": ""Button"",
+                    ""id"": ""4f61422c-d879-4302-a42f-fb78cb6fd2a3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectMicrobe3"",
+                    ""type"": ""Button"",
+                    ""id"": ""541db54b-6a78-480c-a246-6f3f4836874d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -492,6 +519,39 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""69f50c6a-11a7-4e5a-a344-f6b63df8222c"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectMicrobe2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""226b11dc-c03e-4c21-baa5-a58efa490b3d"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectMicrobe1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""95447649-36aa-4034-b882-1fa07c7d2276"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectMicrobe3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1128,6 +1188,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Previous = m_Player.FindAction("Previous", throwIfNotFound: true);
         m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+        m_Player_SelectMicrobe1 = m_Player.FindAction("SelectMicrobe1", throwIfNotFound: true);
+        m_Player_SelectMicrobe2 = m_Player.FindAction("SelectMicrobe2", throwIfNotFound: true);
+        m_Player_SelectMicrobe3 = m_Player.FindAction("SelectMicrobe3", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1218,6 +1281,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Previous;
     private readonly InputAction m_Player_Next;
     private readonly InputAction m_Player_Sprint;
+    private readonly InputAction m_Player_SelectMicrobe1;
+    private readonly InputAction m_Player_SelectMicrobe2;
+    private readonly InputAction m_Player_SelectMicrobe3;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1231,6 +1297,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Previous => m_Wrapper.m_Player_Previous;
         public InputAction @Next => m_Wrapper.m_Player_Next;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
+        public InputAction @SelectMicrobe1 => m_Wrapper.m_Player_SelectMicrobe1;
+        public InputAction @SelectMicrobe2 => m_Wrapper.m_Player_SelectMicrobe2;
+        public InputAction @SelectMicrobe3 => m_Wrapper.m_Player_SelectMicrobe3;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1267,6 +1336,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
+            @SelectMicrobe1.started += instance.OnSelectMicrobe1;
+            @SelectMicrobe1.performed += instance.OnSelectMicrobe1;
+            @SelectMicrobe1.canceled += instance.OnSelectMicrobe1;
+            @SelectMicrobe2.started += instance.OnSelectMicrobe2;
+            @SelectMicrobe2.performed += instance.OnSelectMicrobe2;
+            @SelectMicrobe2.canceled += instance.OnSelectMicrobe2;
+            @SelectMicrobe3.started += instance.OnSelectMicrobe3;
+            @SelectMicrobe3.performed += instance.OnSelectMicrobe3;
+            @SelectMicrobe3.canceled += instance.OnSelectMicrobe3;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1298,6 +1376,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
+            @SelectMicrobe1.started -= instance.OnSelectMicrobe1;
+            @SelectMicrobe1.performed -= instance.OnSelectMicrobe1;
+            @SelectMicrobe1.canceled -= instance.OnSelectMicrobe1;
+            @SelectMicrobe2.started -= instance.OnSelectMicrobe2;
+            @SelectMicrobe2.performed -= instance.OnSelectMicrobe2;
+            @SelectMicrobe2.canceled -= instance.OnSelectMicrobe2;
+            @SelectMicrobe3.started -= instance.OnSelectMicrobe3;
+            @SelectMicrobe3.performed -= instance.OnSelectMicrobe3;
+            @SelectMicrobe3.canceled -= instance.OnSelectMicrobe3;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1505,6 +1592,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnPrevious(InputAction.CallbackContext context);
         void OnNext(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnSelectMicrobe1(InputAction.CallbackContext context);
+        void OnSelectMicrobe2(InputAction.CallbackContext context);
+        void OnSelectMicrobe3(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

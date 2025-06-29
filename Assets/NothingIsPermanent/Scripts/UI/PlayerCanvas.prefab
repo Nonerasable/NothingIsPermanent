@@ -7183,8 +7183,10 @@ MonoBehaviour:
   _resumeButton: {fileID: 464819072877178189}
   _upgradeSpeedButton: {fileID: 2950349010763010337}
   _upgradeMicrobeTypeButtons:
-  - {fileID: 561119223933972126}
-  - {fileID: 8507710795334385839}
+  - button: {fileID: 561119223933972126}
+    upgradeFrom: 0
+  - button: {fileID: 8507710795334385839}
+    upgradeFrom: 1
 --- !u!1 &8488725279310687697
 GameObject:
   m_ObjectHideFlags: 0

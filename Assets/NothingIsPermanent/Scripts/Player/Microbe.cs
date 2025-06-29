@@ -16,7 +16,7 @@ public class Microbe : MonoBehaviour {
     private MeshRenderer _renderer;
     
     private DestructibleMaterialType _maxAffectedMaterial;
-    private bool _isCollected = true;
+    private bool _isCollected = false;
     private float _destructionSpeed = 0.5f;
     
     private DestructiblePart _currentPart;
@@ -26,9 +26,15 @@ public class Microbe : MonoBehaviour {
     private Vector3 _startJumpPosition;
     private Vector3 _targetJumpPositionLcs;
     
-    public void Init(float destructionSpeed, DestructibleMaterialType maxAffectedMaterial) {
+    public void Init(float destructionSpeed, DestructibleMaterialType maxAffectedMaterial, Color color) {
         _destructionSpeed = destructionSpeed;
         _maxAffectedMaterial = maxAffectedMaterial;
+        _renderer.material.color = color;
+    }
+    
+    public void Upgrade(DestructibleMaterialType type, Color color) {
+        _maxAffectedMaterial = type;
+        _renderer.material.color = color;
     }
 
     public void Collect() {
@@ -64,7 +70,7 @@ public class Microbe : MonoBehaviour {
         }
     }
 
-    private void Start() {
+    private void OnEnable() {
         _rigidBody = GetComponent<Rigidbody>();
         _collider = GetComponent<Collider>();
         _renderer = GetComponent<MeshRenderer>();

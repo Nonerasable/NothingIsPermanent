@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MicrobeController : MonoBehaviour {
     [SerializeField] private List<MicrobeSettings> _microbeSettings;
@@ -13,16 +14,45 @@ public class MicrobeController : MonoBehaviour {
     private DestructibleMaterialType _currentMicrobeType = DestructibleMaterialType.WOOD;
 
     private Material _flaskMaterial;
+    private MicrobeColoring _coloring;
+
+    private InputSystem_Actions.PlayerActions _actions;
 
     public void CollectMicrobe(Microbe microbe) {
         microbe.Collect();
-        DIContainer.Inst.ChangeMicrobeCollection(microbe.MaxAffectedMaterial, _microbesByMaterial[(int)microbe.MaxAffectedMaterial]);
+
+        TryUpdateUi(microbe.MaxAffectedMaterial);
+    }
+
+    public void UpgradeMicrobe(DestructibleMaterialType typeToUpgrade) {
+        int idx = (int)typeToUpgrade;
+        if (_microbesByMaterial[idx].Count == 0) {
+            return;
+        }
+        
+        if (Enum.GetValues(typeof(DestructibleMaterialType)).Length == idx) {
+            return;
+        }
+        
+        DestructibleMaterialType nextType = (DestructibleMaterialType)(idx + 1);
+        Microbe microbeToUpgrade = _microbesByMaterial[idx][0];
+        _microbesByMaterial[idx].RemoveAt(0);
+        
+        microbeToUpgrade.Upgrade(nextType, _coloring.GetColor(nextType));
+        _microbesByMaterial[(int)nextType].Add(microbeToUpgrade);
+
+        TryUpdateUi(typeToUpgrade);
     }
     
     public void StartPartDestruction(DestructiblePart part, Vector3 startPoint) {
         if (part.IsBeingDestroyed) {
             return;
         }
+
+        if (part.GetMaxMaterialInWholeObject() > _currentMicrobeType) {
+            return;
+        }
+        
         foreach (Microbe microbe in _microbesByMaterial[(int)_currentMicrobeType]) {
             if (!microbe.IsCollected) {
                 continue;
@@ -33,8 +63,23 @@ public class MicrobeController : MonoBehaviour {
             break;
         }
     }
+
+    private void SelectMicrobe(DestructibleMaterialType type) {
+        _currentMicrobeType = type;
+        _flaskMaterial.SetColor("_Color", _coloring.GetColor(type));
+        DIContainer.Inst.ChangeMicrobeCollection(type, _microbesByMaterial[(int)type]);
+    }
+
+    private void TryUpdateUi(DestructibleMaterialType type) {
+        if (type == _currentMicrobeType) {
+            DIContainer.Inst.ChangeMicrobeCollection(type, _microbesByMaterial[(int)type]);            
+        }
+    }
     
     private void Start() {
+        _actions = DIContainer.Inst.Actions.Player;
+        _coloring = DIContainer.Inst.microbeColoring;
+        
         foreach (var _ in Enum.GetValues(typeof(DestructibleMaterialType))) {
             _microbesByMaterial.Add(new List<Microbe>());
         }
@@ -45,7 +90,7 @@ public class MicrobeController : MonoBehaviour {
                 _microbes.Add(microbe);
             
                 Microbe microbeScript = microbe.GetComponent<Microbe>();
-                microbeScript.Init(settings.destructionSpeed, settings.MaxAffectedMaterial);
+                microbeScript.Init(settings.destructionSpeed, settings.MaxAffectedMaterial, _coloring.GetColor(settings.MaxAffectedMaterial));
                 microbeScript.Collect();
             
                 _microbesByMaterial[(int)settings.MaxAffectedMaterial].Add(microbeScript);
@@ -59,8 +104,23 @@ public class MicrobeController : MonoBehaviour {
                 break;
             }
         }
+
+        _actions.SelectMicrobe1.started += HandleWoodMicrobeSelected;
+        _actions.SelectMicrobe2.started += HandleMetalMicrobeSelected;
+        _actions.SelectMicrobe3.started += HandleGlassMicrobeSelected;
         
-        DIContainer.Inst.ChangeMicrobeCollection(_currentMicrobeType, _microbesByMaterial[(int)_currentMicrobeType]);
+        SelectMicrobe(DestructibleMaterialType.WOOD);
+    }
+
+    private void HandleWoodMicrobeSelected(InputAction.CallbackContext obj) {
+        SelectMicrobe(DestructibleMaterialType.WOOD);
+    }
+    
+    private void HandleMetalMicrobeSelected(InputAction.CallbackContext obj) {
+        SelectMicrobe(DestructibleMaterialType.METAL);
+    }    
+    private void HandleGlassMicrobeSelected(InputAction.CallbackContext obj) {
+        SelectMicrobe(DestructibleMaterialType.GLASS);
     }
 
     private void Update() {
@@ -73,7 +133,7 @@ public class MicrobeController : MonoBehaviour {
             }
         }
         
-        _flaskMaterial.SetFloat("_Fill", (float)microbesCollected / currentMicrobeCollection.Count);
+        _flaskMaterial.SetFloat("_Fill", currentMicrobeCollection.Count == 0 ? 0 : (float)microbesCollected / currentMicrobeCollection.Count);
     }
 
     private void OnDestroy() {
