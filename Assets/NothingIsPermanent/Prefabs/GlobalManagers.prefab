@@ -146,6 +146,18 @@ MonoBehaviour:
   _levelController: {fileID: 7845277249390947067}
   _isPlayerScene: 1
   _mainMenuSceneName: MainMenuScene
+  microbeColoring:
+    _colorSettings:
+    - material: 0
+      color: {r: 0.06355302, g: 0.4811321, b: 0.029503396, a: 1}
+    - material: 1
+      color: {r: 0.735849, g: 0.12471565, b: 0, a: 1}
+    - material: 2
+      color: {r: 0.990566, g: 0.3224012, b: 0.7385195, a: 1}
+  Player: {fileID: 0}
+  MicrobeGlobalParams:
+    DestructionSpeed: 0.5
+    FinalDissolveTIme: 0.8
 --- !u!114 &7845277249390947067
 MonoBehaviour:
   m_ObjectHideFlags: 0

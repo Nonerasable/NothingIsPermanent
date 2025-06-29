@@ -90,7 +90,7 @@ public class MicrobeController : MonoBehaviour {
                 _microbes.Add(microbe);
             
                 Microbe microbeScript = microbe.GetComponent<Microbe>();
-                microbeScript.Init(settings.destructionSpeed, settings.MaxAffectedMaterial, _coloring.GetColor(settings.MaxAffectedMaterial));
+                microbeScript.Init(settings.MaxAffectedMaterial, _coloring.GetColor(settings.MaxAffectedMaterial));
                 microbeScript.Collect();
             
                 _microbesByMaterial[(int)settings.MaxAffectedMaterial].Add(microbeScript);

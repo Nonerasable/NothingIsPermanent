@@ -111,6 +111,9 @@ MonoBehaviour:
   - Count: 3
     MaxAffectedMaterial: 0
     destructionSpeed: 0.5
+  - Count: 3
+    MaxAffectedMaterial: 1
+    destructionSpeed: 0.5
   _microbePrefab: {fileID: 5410983091850267481, guid: 9236500016bc95843bae58854bb632f6, type: 3}
   _flask: {fileID: 2614712488056197835}
 --- !u!65 &860600243365301711

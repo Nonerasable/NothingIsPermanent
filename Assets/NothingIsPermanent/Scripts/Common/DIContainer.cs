@@ -12,7 +12,8 @@ public class DIContainer : MonoBehaviour {
 
     public MicrobeColoring microbeColoring;
 
-    public GameObject Player;
+    [HideInInspector] public GameObject Player;
+    public MicrobeGlobalParams MicrobeGlobalParams = new();
     
     public static DIContainer Inst => _inst;
     public InputSystem_Actions Actions => _actions;

@@ -17,7 +17,6 @@ public class Microbe : MonoBehaviour {
     
     private DestructibleMaterialType _maxAffectedMaterial;
     private bool _isCollected = false;
-    private float _destructionSpeed = 0.5f;
     
     private DestructiblePart _currentPart;
     
@@ -26,8 +25,7 @@ public class Microbe : MonoBehaviour {
     private Vector3 _startJumpPosition;
     private Vector3 _targetJumpPositionLcs;
     
-    public void Init(float destructionSpeed, DestructibleMaterialType maxAffectedMaterial, Color color) {
-        _destructionSpeed = destructionSpeed;
+    public void Init(DestructibleMaterialType maxAffectedMaterial, Color color) {
         _maxAffectedMaterial = maxAffectedMaterial;
         _renderer.material.color = color;
     }
@@ -118,7 +116,7 @@ public class Microbe : MonoBehaviour {
         _rigidBody.isKinematic = true;
         _collider.enabled = false;
         
-        _currentPart.StartDestruction(destructionPoint);
+        _currentPart.StartDestruction(destructionPoint, _renderer.material.color);
         _currentPart.OnStartJumpOf += HandlePartDestroyed;
     }
 

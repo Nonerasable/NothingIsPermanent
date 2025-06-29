@@ -17,8 +17,9 @@ public class DestructiblePart : MonoBehaviour {
     
     [SerializeField] private DestructibleMaterialType _materialType;
     [SerializeField] private DestructiblePart _attachedTo;
-    [SerializeField] [Min(0.1f)] private float _destroySpeedPerSecond = 1;
 
+    private MicrobeGlobalParams _microbeParams;
+    
     private MeshFilter _meshFilter;
     private DissolveObject _dissolveObject;
 
@@ -65,14 +66,14 @@ public class DestructiblePart : MonoBehaviour {
         _attachedParts.Add(part);
     }
 
-    public void StartDestruction(Vector3 destructionStartPointWcs) {
+    public void StartDestruction(Vector3 destructionStartPointWcs, Color destructionColor) {
         if (state != DestructiblePartState.NONE && state != DestructiblePartState.WAITING_FOR_DESTROY) {
             return;
         }
         _destructionStartPointLcs = transform.InverseTransformPoint(destructionStartPointWcs);
         state = DestructiblePartState.BEING_DESTROYED;
         
-        _dissolveObject.StartDestroy(destructionStartPointWcs);
+        _dissolveObject.StartDestroy(destructionStartPointWcs, destructionColor);
     }
 
     private void Awake() {
@@ -83,14 +84,14 @@ public class DestructiblePart : MonoBehaviour {
     }
 
     private void Start() {
-        if (!_attachedTo) {
-            return;
-        }
+        _microbeParams = DIContainer.Inst.MicrobeGlobalParams;
         
-        _attachedTo.OnBeforeDestroy += HandleParentObjectDestroyed;
-        _joint = gameObject.AddComponent<FixedJoint>();
-        _joint.connectedBody = _attachedTo.GetComponent<Rigidbody>();
-        _attachedTo.RegisterAttachedPart(this);
+        if (_attachedTo) {
+            _attachedTo.OnBeforeDestroy += HandleParentObjectDestroyed;
+            _joint = gameObject.AddComponent<FixedJoint>();
+            _joint.connectedBody = _attachedTo.GetComponent<Rigidbody>();
+            _attachedTo.RegisterAttachedPart(this);
+        }
     }
 
     private void OnDestroy() {
@@ -107,7 +108,7 @@ public class DestructiblePart : MonoBehaviour {
             case DestructiblePartState.NONE:
                 return;
             case DestructiblePartState.BEING_DESTROYED:
-                _currentDestructionRadius += Time.deltaTime * _destroySpeedPerSecond;
+                _currentDestructionRadius += Time.deltaTime * _microbeParams.DestructionSpeed;
                 _dissolveObject.SetDissolveRadius(_currentDestructionRadius);
                 if (!AreBoundsInsideDestructionSphere()) {
                     return;
