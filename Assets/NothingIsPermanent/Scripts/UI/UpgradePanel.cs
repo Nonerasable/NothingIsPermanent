@@ -29,6 +29,7 @@ public class UpgradePanel : MonoBehaviour {
     }
 
     private void UpgradeMicrobeSpeed() {
+        DIContainer.Inst.MicrobeGlobalParams.DestructionSpeed += 0.5f;
     }
 
     private void UpgradeMicrobeType(DestructibleMaterialType materialType) {
