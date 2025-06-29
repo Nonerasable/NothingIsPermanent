@@ -13,6 +13,7 @@ public class HitController : MonoBehaviour {
 
     private List<Microbe> _seenMicrobes = new();
     private InputSystem_Actions.PlayerActions _actions;
+    private Microbe _currentUsableMicrobe;
     
     private void OnTriggerEnter(Collider other) {
         Microbe microbe = other.gameObject.GetComponent<Microbe>();
@@ -35,6 +36,7 @@ public class HitController : MonoBehaviour {
     void Start() {
         _actions = DIContainer.Inst.Actions.Player;
         _microbeController = GetComponent<MicrobeController>();
+        DIContainer.Inst.ChangeMicrobe(_currentUsableMicrobe);
     }
     
     void Update() {
@@ -59,6 +61,11 @@ public class HitController : MonoBehaviour {
                 minAngle = angle;
                 closestMicrobe = microbe;
             }
+        }
+
+        if (_currentUsableMicrobe != closestMicrobe) {
+            _currentUsableMicrobe = closestMicrobe;
+            DIContainer.Inst.ChangeMicrobe(_currentUsableMicrobe);
         }
 
         if (closestMicrobe && _actions.Interact.WasPressedThisFrame()) {

@@ -9,6 +9,7 @@ public class Microbe : MonoBehaviour {
 
     public bool IsDestroyingNow => _currentPart;
     public bool IsCollected { get; set; }
+    public DestructibleMaterialType MaxAffectedMaterial => _maxAffectedMaterial;
 
     private Rigidbody _rigidBody;
     private Collider _collider;

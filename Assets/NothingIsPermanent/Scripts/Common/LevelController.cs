@@ -61,6 +61,7 @@ public class LevelController : MonoBehaviour {
         }
 
         if (_currentLevelProgress >= _currentLevelSettings.LevelGoal) {
+            _isLevelStarted = false;
             WinLevel();
         }
         

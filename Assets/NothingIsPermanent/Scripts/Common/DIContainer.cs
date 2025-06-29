@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class DIContainer : MonoBehaviour {
@@ -25,12 +27,15 @@ public class DIContainer : MonoBehaviour {
             _currentUiCanvas = Instantiate(_playerUICanvasPrefab);
         }
 
+        Actions.UI.Esc.performed += EscMenuPerformed;
+        Actions.UI.Tab.performed += UpgradeMenuPerformed;
+
         _levelController.OnTimeUpdated += HandleTimeUpdate;
         _levelController.OnGameOver += HandleGameOver;
         _levelController.OnLevelWin += HandleGameWin;
         _levelController.OnLevelProgressUpdated += HandleLevelProgressUpdated;
     }
-
+    
     public void ShowLevelInfo(int levelIndex) {
         _actions.Player.Disable();
         _levelController.SetupLevel(levelIndex);
@@ -46,6 +51,30 @@ public class DIContainer : MonoBehaviour {
         _actions.Player.Enable();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void OpenEscMenu() {
+        _actions.Player.Disable();
+        Time.timeScale = 0f;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        _currentUiCanvas.ShowEscMenu();
+    }
+
+    public void OpenUpgradePanel() {
+        _actions.Player.Disable();
+        Time.timeScale = 0f;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        _currentUiCanvas.ShowUpgradePanel();
+    }
+
+    public void Resume() {
+        _actions.Player.Enable();
+        Time.timeScale = 1;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        _currentUiCanvas.HidePausePanels();
     }
 
     public void LoadMainMenu() {
@@ -70,6 +99,43 @@ public class DIContainer : MonoBehaviour {
     public void LoadTestPreset() {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void ChangeMicrobe(Microbe microbe) {
+        if (microbe == null) {
+            _currentUiCanvas.PlayerPanel.HideUsableHint();
+        }
+        else {
+            _currentUiCanvas.PlayerPanel.ShowUsableHint("E" , "Collect the microbes in a flask");
+        }
+    }
+
+    public void ChangeMicrobeCollection(DestructibleMaterialType destructibleMaterialType, List<Microbe> microbeList) {
+        var collectedMicrobeCount = 0;
+        foreach (var microbe in microbeList) {
+            if (microbe.IsCollected) {
+                collectedMicrobeCount += 1;
+            }
+        }
+        _currentUiCanvas.PlayerPanel.UpdateMicrobeAmmo(collectedMicrobeCount, microbeList.Count, destructibleMaterialType);
+    }
+
+    private void EscMenuPerformed(InputAction.CallbackContext obj) {
+        if (Time.timeScale == 0f) {
+            Resume();
+        }
+        else {
+            OpenEscMenu();
+        }
+    }
+
+    private void UpgradeMenuPerformed(InputAction.CallbackContext obj) {
+        if (Time.timeScale == 0f) {
+            Resume();
+        }
+        else {
+            OpenUpgradePanel();
+        }
     }
 
     private void HandleTimeUpdate(float time) {
