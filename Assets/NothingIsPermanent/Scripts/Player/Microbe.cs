@@ -8,6 +8,7 @@ public class Microbe : MonoBehaviour {
     [SerializeField] [Min(0.1f)] private float _upwardsForceWhenJumpOff = 0.5f;
 
     public bool IsDestroyingNow => _currentPart;
+    public bool IsCollected { get; set; }
 
     private Rigidbody _rigidBody;
     private Collider _collider;

@@ -9,13 +9,18 @@ public class MicrobeController : MonoBehaviour {
     private List<List<Microbe>> _microbesByMaterial = new();
     private List<GameObject> _microbes = new();
 
+    public void CollectMicrobe(Microbe microbe) {
+        microbe.IsCollected = true;
+    }
+    
     public void StartPartDestruction(DestructiblePart part, Vector3 startPoint) {
         foreach (Microbe microbe in _microbesByMaterial[0]) {
-            if (microbe.IsDestroyingNow) {
+            if (!microbe.IsCollected) {
                 continue;
             }
             
             microbe.StartDestruction(part, startPoint);
+            microbe.IsCollected = false;
         }
     }
     
@@ -30,6 +35,7 @@ public class MicrobeController : MonoBehaviour {
             
             Microbe microbeScript = microbe.GetComponent<Microbe>();
             microbeScript.Init(settings.destructionSpeed, settings.MaxAffectedMaterial);
+            microbeScript.IsCollected = true;
             
             _microbesByMaterial[(int)settings.MaxAffectedMaterial].Add(microbeScript);
         }

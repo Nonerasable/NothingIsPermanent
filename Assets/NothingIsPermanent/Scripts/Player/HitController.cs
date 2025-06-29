@@ -1,18 +1,71 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(MicrobeController))]
+[RequireComponent(typeof(BoxCollider))]
 public class HitController : MonoBehaviour {
-
+    [SerializeField] [Range(0, 180f)] private float _collectAngle = 20f;
     private MicrobeController _microbeController;
 
+    private List<Microbe> _seenMicrobes = new();
+    private InputSystem_Actions.PlayerActions _actions;
+    
+    private void OnTriggerEnter(Collider other) {
+        Microbe microbe = other.gameObject.GetComponent<Microbe>();
+        if (!microbe || _seenMicrobes.Contains(microbe)) {
+            return;
+        }
+
+        _seenMicrobes.Add(microbe);
+    }
+
+    private void OnTriggerExit(Collider other) {
+        Microbe microbe = other.gameObject.GetComponent<Microbe>();
+        if (!microbe || !_seenMicrobes.Contains(microbe)) {
+            return;
+        }
+
+        _seenMicrobes.Remove(microbe);
+    }
+
     void Start() {
+        _actions = DIContainer.Inst.Actions.Player;
         _microbeController = GetComponent<MicrobeController>();
     }
     
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+        Vector3 cameraPos = Camera.main.transform.position;
+        Vector3 cameraForward = Camera.main.transform.forward;
+
+        float minAngle = 180;
+        Microbe closestMicrobe = null;
+        foreach (Microbe microbe in _seenMicrobes) {
+            if (microbe.IsDestroyingNow || microbe.IsCollected) {
+                continue;
+            }
+            
+            Vector3 dirToMicrobe = (microbe.transform.position - cameraPos).normalized;
+            float angle = Vector3.Angle(cameraForward, dirToMicrobe);
+            
+            if (angle > _collectAngle) {
+                continue;
+            }
+
+            if (angle < minAngle) {
+                minAngle = angle;
+                closestMicrobe = microbe;
+            }
+        }
+
+        if (closestMicrobe && _actions.Interact.WasPressedThisFrame()) {
+            _microbeController.CollectMicrobe(closestMicrobe);
+        }
+
+        if (_actions.Attack.WasPressedThisFrame()) {
             DoHit();
         }
     }
