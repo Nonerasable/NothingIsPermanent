@@ -2377,9 +2377,9 @@ MonoBehaviour:
   _usableHintTextfield: {fileID: 6459586806429736588}
   _microbeAmmoTextfield: {fileID: 1362353188382377281}
   _microbeTypeImage: {fileID: 8860549422007631236}
-  _woodMicrobeImageTexture: {fileID: 21300000, guid: 896fa92d9dc72754ab2b984799b63bef, type: 3}
-  _metalMicrobeImageTexture: {fileID: 21300000, guid: 896fa92d9dc72754ab2b984799b63bef, type: 3}
-  _glassMicrobeImageTexture: {fileID: 21300000, guid: 896fa92d9dc72754ab2b984799b63bef, type: 3}
+  _woodMicrobeImageTexture: {fileID: 21300000, guid: 7eb202fd9876bd642b38c70603d56da4, type: 3}
+  _metalMicrobeImageTexture: {fileID: 21300000, guid: bb89ce6ddd0a61640af3329a6c9f763f, type: 3}
+  _glassMicrobeImageTexture: {fileID: 21300000, guid: ec32d2dc1331c994591c9b5562e7868c, type: 3}
 --- !u!1 &3067568125546540032
 GameObject:
   m_ObjectHideFlags: 0
@@ -3725,7 +3725,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 896fa92d9dc72754ab2b984799b63bef, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7eb202fd9876bd642b38c70603d56da4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
