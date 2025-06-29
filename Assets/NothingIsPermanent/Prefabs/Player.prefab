@@ -79,7 +79,7 @@ MonoBehaviour:
   _jumpSpeed: 8
   _gravity: 20
   _playerCamera: {fileID: 7675592216454954598}
-  _lookSpeed: 2
+  _lookSpeed: 0.5
   _lookXLimit: 45
 --- !u!114 &3462244742051605344
 MonoBehaviour:

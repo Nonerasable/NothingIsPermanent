@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 
 public class DestructibleObject : MonoBehaviour {
-    
     public Action OnBeforeDestroy;
     
     private List<DestructiblePart> _allParts = new();
