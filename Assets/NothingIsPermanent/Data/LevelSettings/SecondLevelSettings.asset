@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SecondLevelSettings
   m_EditorClassIdentifier: 
   LevelTime: 160
-  LevelGoal: 10
+  LevelGoal: 16
   StartLevelDescription: Level 2
   LevelSceneName: SecondLevelScene

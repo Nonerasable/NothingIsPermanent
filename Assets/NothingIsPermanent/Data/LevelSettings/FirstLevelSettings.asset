@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FirstLevelSettings
   m_EditorClassIdentifier: 
   LevelTime: 120
-  LevelGoal: 10
+  LevelGoal: 12
   StartLevelDescription: "Level 1:  I\u2019ve invented a microbe. Now it\u2019s time
     to test it. It\u2019s supposed to eat all the wooden objects in my room. Hopefully,
     everything goes according to plan. I\u2019ll start the timer \u2014 I\u2019ve

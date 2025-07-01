@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c192124930a4bf64aa667ea3d1fbd0d9, type: 3}
   m_Name: ThirdLevelSettings
   m_EditorClassIdentifier: 
-  LevelTime: 160
-  LevelGoal: 10
+  LevelTime: 180
+  LevelGoal: 24
   StartLevelDescription: Level 3
   LevelSceneName: ThirdLevelScene

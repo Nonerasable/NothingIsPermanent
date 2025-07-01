@@ -11,67 +11,126 @@ Shader "Custom/GlobalDissolve"
 
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Opaque" "Queue"="Geometry" }
         LOD 200
 
+        // Main Pass with lighting
         Pass
         {
-            CGPROGRAM
+            Name "ForwardLit"
+            Tags { "LightMode"="UniversalForward" }
+
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #include "UnityCG.cginc"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
             sampler2D _MainTex;
             sampler2D _NoiseTex;
-
             float4 _EdgeColor;
             float _EdgeWidth;
             float _Progress;
 
-            struct appdata
+            struct Attributes
             {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
+                float4 positionOS : POSITION;
+                float2 uv         : TEXCOORD0;
+                float3 normalOS   : NORMAL;
             };
 
-            struct v2f
+            struct Varyings
             {
-                float2 uv : TEXCOORD0;
-                float4 pos : SV_POSITION;
+                float4 positionHCS : SV_POSITION;
+                float2 uv          : TEXCOORD0;
+                float3 worldPos    : TEXCOORD1;
+                float3 normalWS    : TEXCOORD2;
             };
 
-            v2f vert(appdata v)
+            Varyings vert(Attributes IN)
             {
-                v2f o;
-                o.pos = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv;
-                return o;
+                Varyings OUT;
+                OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
+                OUT.uv = IN.uv;
+                OUT.worldPos = TransformObjectToWorld(IN.positionOS.xyz);
+                OUT.normalWS = TransformObjectToWorldNormal(IN.normalOS);
+                return OUT;
             }
 
-            fixed4 frag(v2f i) : SV_Target
+            half4 frag(Varyings IN) : SV_Target
             {
-                float noise = tex2D(_NoiseTex, i.uv).r;
+                float noise = tex2D(_NoiseTex, IN.uv).r;
 
-                float dissolveThreshold = _Progress;
-                float edgeRange = _EdgeWidth;
-
-                // основа для сравнения
-                float d = saturate((dissolveThreshold - noise) / edgeRange);
-
-                // отбрасываем пиксели, полностью исчезнувшие
-                if (noise < dissolveThreshold - edgeRange)
+                float d = saturate((_Progress - noise) / _EdgeWidth);
+                if (noise < _Progress - _EdgeWidth)
                     discard;
 
-                // подсвечиваем края
                 float edge = smoothstep(0.0, 1.0, d) * (1 - step(1.0, d));
                 float3 edgeGlow = _EdgeColor.rgb * edge;
 
-                float3 baseColor = tex2D(_MainTex, i.uv).rgb;
-                float3 finalColor = baseColor + edgeGlow;
+                float3 baseColor = tex2D(_MainTex, IN.uv).rgb;
 
-                return float4(finalColor, 1.0);
+                // Простейшее освещение от Directional Light
+                Light mainLight = GetMainLight();
+                float3 normalWS = normalize(IN.normalWS);
+                float NdotL = saturate(dot(normalWS, normalize(mainLight.direction)));
+                float3 litColor = baseColor * mainLight.color.rgb * NdotL;
+
+                return float4(litColor + edgeGlow, 1.0);
             }
-            ENDCG
+
+            ENDHLSL
+        }
+
+        // ShadowCaster pass (чтобы объект отбрасывал тень)
+        Pass
+        {
+            Name "ShadowCaster"
+            Tags { "LightMode" = "ShadowCaster" }
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment fragShadow
+            #pragma multi_compile_shadowcaster
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+
+            sampler2D _NoiseTex;
+            float _Progress;
+            float _EdgeWidth;
+
+            struct Attributes
+            {
+                float4 positionOS : POSITION;
+                float3 normalOS   : NORMAL;
+                float2 uv         : TEXCOORD0;
+            };
+
+            struct Varyings
+            {
+                float4 positionHCS : SV_POSITION;
+                float2 uv : TEXCOORD0;
+            };
+
+            Varyings vert(Attributes IN)
+            {
+                Varyings OUT;
+                float3 positionWS = TransformObjectToWorld(IN.positionOS.xyz);
+                float3 normalWS = TransformObjectToWorldNormal(IN.normalOS);
+                OUT.positionHCS = TransformWorldToHClip(positionWS + normalWS * 0.005);
+                OUT.uv = IN.uv;
+                return OUT;
+            }
+
+            float4 fragShadow(Varyings IN) : SV_Target
+            {
+                float noise = tex2D(_NoiseTex, IN.uv).r;
+                if (noise < _Progress - _EdgeWidth)
+                    discard;
+                return 0;
+            }
+
+            ENDHLSL
         }
     }
 }
