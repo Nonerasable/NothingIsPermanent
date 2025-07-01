@@ -19,3 +19,12 @@ MonoBehaviour:
     everything goes according to plan. I\u2019ll start the timer \u2014 I\u2019ve
     got two minutes to finish the job."
   LevelSceneName: FirstLevelScene
+  MicrobeSettings:
+  - Count: 3
+    MaxAffectedMaterial: 0
+  MicrobeSpeedUpgrade:
+  - AddedMultiplier: 0.5
+    Cost: 15
+  - AddedMultiplier: 0.5
+    Cost: 50
+  MicrobeTypeUpgrade: []
