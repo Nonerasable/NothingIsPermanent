@@ -18,6 +18,29 @@ public class MicrobeController : MonoBehaviour {
 
     private InputSystem_Actions.PlayerActions _actions;
 
+    public void SetupMicrobe(List<MicrobeSettings> microbeSettings) {
+        List<MicrobeSettings> settingsToUse = microbeSettings ?? _microbeSettings;
+        
+        foreach (MicrobeSettings settings in settingsToUse) {
+            for (int i = 0; i < settings.Count; i++) {
+                GameObject microbe = Instantiate(_microbePrefab);
+                _microbes.Add(microbe);
+            
+                Microbe microbeScript = microbe.GetComponent<Microbe>();
+                microbeScript.Init(settings.MaxAffectedMaterial, _coloring.GetColor(settings.MaxAffectedMaterial));
+                microbeScript.Collect();
+            
+                _microbesByMaterial[(int)settings.MaxAffectedMaterial].Add(microbeScript);
+            }
+        }
+        
+        SelectMicrobe(DestructibleMaterialType.WOOD);
+    }
+
+    public bool HasMicrobesOfType(DestructibleMaterialType type) {
+        return _microbesByMaterial[(int)type].Count != 0;
+    }
+    
     public void CollectMicrobe(Microbe microbe) {
         microbe.Collect();
 
@@ -35,8 +58,20 @@ public class MicrobeController : MonoBehaviour {
         }
         
         DestructibleMaterialType nextType = (DestructibleMaterialType)(idx + 1);
+        
+        // try to upgrade microbe in flask first
+        // if all microbes are in use, upgrade first microbe
         Microbe microbeToUpgrade = _microbesByMaterial[idx][0];
-        _microbesByMaterial[idx].RemoveAt(0);
+        foreach (Microbe microbe in _microbesByMaterial[idx]) {
+            if (microbe.IsDestroyingNow) {
+                continue;
+            }
+
+            microbeToUpgrade = microbe;
+            break;
+        }
+
+        _microbesByMaterial[idx].Remove(microbeToUpgrade);
         
         microbeToUpgrade.Upgrade(nextType, _coloring.GetColor(nextType));
         _microbesByMaterial[(int)nextType].Add(microbeToUpgrade);
@@ -75,26 +110,10 @@ public class MicrobeController : MonoBehaviour {
             DIContainer.Inst.ChangeMicrobeCollection(type, _microbesByMaterial[(int)type]);            
         }
     }
-    
-    private void Start() {
-        _actions = DIContainer.Inst.Actions.Player;
-        _coloring = DIContainer.Inst.microbeColoring;
-        
+
+    private void Awake() {
         foreach (var _ in Enum.GetValues(typeof(DestructibleMaterialType))) {
             _microbesByMaterial.Add(new List<Microbe>());
-        }
-        
-        foreach (MicrobeSettings settings in _microbeSettings) {
-            for (int i = 0; i < settings.Count; i++) {
-                GameObject microbe = Instantiate(_microbePrefab);
-                _microbes.Add(microbe);
-            
-                Microbe microbeScript = microbe.GetComponent<Microbe>();
-                microbeScript.Init(settings.MaxAffectedMaterial, _coloring.GetColor(settings.MaxAffectedMaterial));
-                microbeScript.Collect();
-            
-                _microbesByMaterial[(int)settings.MaxAffectedMaterial].Add(microbeScript);
-            }
         }
         
         MeshRenderer flaskRenderer = _flask.GetComponent<MeshRenderer>();
@@ -104,12 +123,15 @@ public class MicrobeController : MonoBehaviour {
                 break;
             }
         }
-
+    }
+    
+    private void Start() {
+        _actions = DIContainer.Inst.Actions.Player;
+        _coloring = DIContainer.Inst.microbeColoring;
+        
         _actions.SelectMicrobe1.started += HandleWoodMicrobeSelected;
         _actions.SelectMicrobe2.started += HandleMetalMicrobeSelected;
         _actions.SelectMicrobe3.started += HandleGlassMicrobeSelected;
-        
-        SelectMicrobe(DestructibleMaterialType.WOOD);
     }
 
     private void HandleWoodMicrobeSelected(InputAction.CallbackContext obj) {
@@ -141,12 +163,4 @@ public class MicrobeController : MonoBehaviour {
             Destroy(microbe);
         }
     }
-}
-
-[Serializable]
-public class MicrobeSettings {
-    [Min(1)]
-    public int Count;
-    public DestructibleMaterialType MaxAffectedMaterial;
-    [Min(0.01f)] public float destructionSpeed = 1f;
 }

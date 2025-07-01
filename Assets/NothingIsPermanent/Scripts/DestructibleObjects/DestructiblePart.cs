@@ -17,8 +17,10 @@ public class DestructiblePart : MonoBehaviour {
     
     [SerializeField] private DestructibleMaterialType _materialType;
     [SerializeField] private DestructiblePart _attachedTo;
+    [SerializeField] private int _pointsForDestruction = -1;
 
     private MicrobeGlobalParams _microbeParams;
+    private MicrobeProgressionController _progressionController;
     
     private MeshFilter _meshFilter;
     private DissolveObject _dissolveObject;
@@ -33,6 +35,7 @@ public class DestructiblePart : MonoBehaviour {
 
     public DestructibleMaterialType MaterialType => _materialType;
     public bool IsBeingDestroyed => state != DestructiblePartState.NONE;
+    public int PointsForDestrucion => _pointsForDestruction;
 
     public DestructibleMaterialType GetMaxMaterialInWholeObject() {
         return _destructibleObject.MaxMaterialType;
@@ -85,6 +88,7 @@ public class DestructiblePart : MonoBehaviour {
 
     private void Start() {
         _microbeParams = DIContainer.Inst.MicrobeGlobalParams;
+        _progressionController = DIContainer.Inst.ProgressionController;
         
         if (_attachedTo) {
             _attachedTo.OnBeforeDestroy += HandleParentObjectDestroyed;
@@ -108,7 +112,7 @@ public class DestructiblePart : MonoBehaviour {
             case DestructiblePartState.NONE:
                 return;
             case DestructiblePartState.BEING_DESTROYED:
-                _currentDestructionRadius += Time.deltaTime * _microbeParams.DestructionSpeed;
+                _currentDestructionRadius += Time.deltaTime * _microbeParams.BaseDestructionSpeed * _progressionController.SpeedMultiplier;
                 _dissolveObject.SetDissolveRadius(_currentDestructionRadius);
                 if (!AreBoundsInsideDestructionSphere()) {
                     return;

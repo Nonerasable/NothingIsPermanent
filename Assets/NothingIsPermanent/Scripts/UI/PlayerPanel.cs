@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class PlayerPanel : MonoBehaviour {
     [SerializeField] TMPro.TextMeshProUGUI _levelProgressTextfield;
     [SerializeField] TMPro.TextMeshProUGUI _levelTimeTextfield;
+    [SerializeField] TMPro.TextMeshProUGUI _destructionObjectsPoints;
     [SerializeField] private Color _normalColor;
     [SerializeField] private Color _noTimeColor;
     [SerializeField] GameObject _usableHintContainer;
@@ -48,5 +49,9 @@ public class PlayerPanel : MonoBehaviour {
             case DestructibleMaterialType.METAL: _microbeTypeImage.sprite = _metalMicrobeImageTexture; break;
             case DestructibleMaterialType.GLASS: _microbeTypeImage.sprite = _glassMicrobeImageTexture; break;
         }
+    }
+
+    public void UpdatePoints(int points) {
+        _destructionObjectsPoints.text = $"Points: {points}";
     }
 }

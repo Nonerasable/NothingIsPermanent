@@ -14,12 +14,15 @@ public class DissolveObject : MonoBehaviour {
     private bool _isFullyDissolved = false;
     private Color _destructionColor;
 
+    private MicrobeProgressionController _progressionController;
+
     private void Awake() {
         _renderer = GetComponent<Renderer>();
     }
 
     private void Start() {
         _renderer.material = dissolveMat;
+        _progressionController = DIContainer.Inst.ProgressionController;
     }
     
     public void StartDestroy(Vector3 hitPoint, Color destructionColor) {
@@ -47,11 +50,11 @@ public class DissolveObject : MonoBehaviour {
 
         bool isEventInvoked = false;
 
-        float finalDissolveTime = DIContainer.Inst.MicrobeGlobalParams.FinalDissolveTIme;
+        float finalDissolveTime = DIContainer.Inst.MicrobeGlobalParams.FinalDissolveTime;
         float finalDissolveThreshold = DIContainer.Inst.MicrobeGlobalParams.FinalDissolveThreshold;
         while (t < finalDissolveTime)
         {
-            t += Time.deltaTime;
+            t += Time.deltaTime * _progressionController.SpeedMultiplier;
             float progress = Mathf.Clamp01(t / finalDissolveTime);
             mat.SetFloat("_Progress", progress);
 

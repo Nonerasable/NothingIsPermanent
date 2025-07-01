@@ -12,16 +12,27 @@ public class DIContainer : MonoBehaviour {
 
     public MicrobeColoring microbeColoring;
 
-    [HideInInspector] public GameObject Player;
+    [HideInInspector]
+    public GameObject Player {
+        get => _player;
+        set {
+            _player = value;
+            _player.GetComponent<MicrobeController>().SetupMicrobe(_currentLevelSettings?.MicrobeSettings);
+            ProgressionController.UpdateUi();
+        }
+    }
     public MicrobeGlobalParams MicrobeGlobalParams = new();
+    public MicrobeProgressionController ProgressionController = new();
     
     public static DIContainer Inst => _inst;
     public InputSystem_Actions Actions => _actions;
     public LevelController LevelController => _levelController;
-    
+
+    private GameObject _player;
     private static DIContainer _inst;
     private InputSystem_Actions _actions;
     private PlayerCanvas _currentUiCanvas;
+    private LevelSettings _currentLevelSettings;
     
     private void Awake() {
         _actions = new();
@@ -44,10 +55,13 @@ public class DIContainer : MonoBehaviour {
     public void ShowLevelInfo(int levelIndex) {
         _actions.Player.Disable();
         _levelController.SetupLevel(levelIndex);
-        var levelSettings = _levelController.GetCurrentLevelSettings();
-        _currentUiCanvas.ShowLevelInfo(levelSettings);
+        _currentLevelSettings = _levelController.GetCurrentLevelSettings();
+        _currentUiCanvas.ShowLevelInfo(_currentLevelSettings);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        
+        ProgressionController.Reset();
+        ProgressionController.Setup(_currentLevelSettings, _currentUiCanvas.UpgradePanel);
     }
 
     public void StartLevel() {
@@ -84,6 +98,7 @@ public class DIContainer : MonoBehaviour {
 
     public void LoadMainMenu() {
         SceneManager.LoadScene(_mainMenuSceneName);
+        _currentLevelSettings = null;
     }
 
     public void RestartCurrentLevel() {
@@ -104,6 +119,10 @@ public class DIContainer : MonoBehaviour {
     public void LoadTestPreset() {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        _currentLevelSettings = null;
+        
+        ProgressionController.Reset();
+        ProgressionController.Setup(null, _currentUiCanvas.UpgradePanel);
     }
 
     public void ChangeMicrobe(Microbe microbe) {
@@ -113,6 +132,10 @@ public class DIContainer : MonoBehaviour {
         else {
             _currentUiCanvas.PlayerPanel.ShowUsableHint("E" , "Collect the microbes in a flask");
         }
+    }
+
+    public void UpdatePoints(int points) {
+        _currentUiCanvas.PlayerPanel.UpdatePoints(points);
     }
 
     public void ChangeMicrobeCollection(DestructibleMaterialType destructibleMaterialType, List<Microbe> microbeList) {

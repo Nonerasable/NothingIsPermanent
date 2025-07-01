@@ -130,6 +130,7 @@ MonoBehaviour:
   - FirstLevelScene
   - SecondLevelScene
   - ThirdLevelScene
+  - TestLevelScene
 --- !u!114 &6890903234522159170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,10 +155,10 @@ MonoBehaviour:
       color: {r: 0.735849, g: 0.12471565, b: 0, a: 1}
     - material: 2
       color: {r: 0.990566, g: 0.3224012, b: 0.7385195, a: 1}
-  Player: {fileID: 0}
   MicrobeGlobalParams:
-    DestructionSpeed: 0.5
-    FinalDissolveTIme: 0.8
+    BaseDestructionSpeed: 0.5
+    FinalDissolveTime: 0.8
+    FinalDissolveThreshold: 0.7
 --- !u!114 &7845277249390947067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,3 +175,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2d2a27b187d4bac42a138c1963d26d40, type: 2}
   - {fileID: 11400000, guid: 840331f7fbed3a245ac86621f3d03aa4, type: 2}
   - {fileID: 11400000, guid: 28cbdd875a82aba449ba0b761d5e866b, type: 2}
+  - {fileID: 11400000, guid: 40d0994ced338aa4f87fdf994c8d02c3, type: 2}

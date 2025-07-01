@@ -24,6 +24,8 @@ public class Microbe : MonoBehaviour {
     private float _jumpTimeCurrent = 0;
     private Vector3 _startJumpPosition;
     private Vector3 _targetJumpPositionLcs;
+
+    private MicrobeProgressionController _progressionController;
     
     public void Init(DestructibleMaterialType maxAffectedMaterial, Color color) {
         _maxAffectedMaterial = maxAffectedMaterial;
@@ -74,6 +76,10 @@ public class Microbe : MonoBehaviour {
         _renderer = GetComponent<MeshRenderer>();
     }
 
+    private void Start() {
+        _progressionController = DIContainer.Inst.ProgressionController;
+    }
+
     private void OnDestroy() {
         if (_currentPart) {
             _currentPart.OnStartJumpOf -= HandlePartDestroyed;
@@ -89,7 +95,7 @@ public class Microbe : MonoBehaviour {
         
         if (_jumpTimeCurrent < _jumpingTime)
         {
-            _jumpTimeCurrent += Time.deltaTime;
+            _jumpTimeCurrent += Time.deltaTime * _progressionController.SpeedMultiplier;
             float t = Mathf.Clamp01(_jumpTimeCurrent / _jumpingTime);
             Vector3 pos = GetParabolaPoint(_startJumpPosition, targetPointWcs, _jumpHeight, t);
             transform.position = pos;

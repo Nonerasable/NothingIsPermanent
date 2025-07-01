@@ -11,6 +11,7 @@ public class PlayerCanvas : MonoBehaviour {
     [SerializeField] UpgradePanel _upgradePanel;
     
     public PlayerPanel PlayerPanel => _playerPanel;
+    public UpgradePanel UpgradePanel => _upgradePanel;
     
     private void Awake() {
         _startLevelPanel.gameObject.SetActive(false);

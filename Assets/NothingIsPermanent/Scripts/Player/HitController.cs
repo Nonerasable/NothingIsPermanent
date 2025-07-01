@@ -101,5 +101,6 @@ public class HitController : MonoBehaviour {
         }
         
         _microbeController.CollectMicrobe(_currentUsableMicrobe);
+        _seenMicrobes.Remove(_currentUsableMicrobe);
     }
 }

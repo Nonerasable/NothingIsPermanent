@@ -82,7 +82,7 @@ public class LevelController : MonoBehaviour {
         OnGameOver?.Invoke();
     }
 
-    private void HandleObjectDestroyed() {
+    private void HandleObjectDestroyed(int _) {
         _currentLevelProgress += 1;
         OnLevelProgressUpdated?.Invoke(_currentLevelProgress);
     }
