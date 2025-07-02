@@ -9,6 +9,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(BoxCollider))]
 public class HitController : MonoBehaviour {
     [SerializeField] [Range(0, 180f)] private float _collectAngle = 20f;
+    [SerializeField] private LayerMask layerMask;
+    
     private MicrobeController _microbeController;
 
     private List<Microbe> _seenMicrobes = new();
@@ -81,7 +83,7 @@ public class HitController : MonoBehaviour {
         var cam = Camera.main;
         var ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f)) {
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask)) {
             DestructiblePart part = hit.collider.GetComponent<DestructiblePart>();
             if (part) {
                 _microbeController.StartPartDestruction(part, hit.point);
