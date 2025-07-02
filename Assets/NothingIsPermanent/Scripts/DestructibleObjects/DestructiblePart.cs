@@ -12,6 +12,7 @@ enum DestructiblePartState {
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(DissolveObject))]
 public class DestructiblePart : MonoBehaviour {
+    
     public Action OnBeforeDestroy;
     public Action OnStartJumpOf;
     
@@ -117,7 +118,7 @@ public class DestructiblePart : MonoBehaviour {
                 if (!AreBoundsInsideDestructionSphere()) {
                     return;
                 }
-
+                
                 state = DestructiblePartState.FINAL_DISSOLVE;
                 _dissolveObject.StartFinalDissolve();
                 break;

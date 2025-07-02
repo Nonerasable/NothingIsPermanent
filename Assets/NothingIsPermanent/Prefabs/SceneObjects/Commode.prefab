@@ -221,6 +221,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a8cd65445eebde4491e207664db5d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _defaultPointForPartDestruction: 2
+  _PointsForFullDestruction: 16
+  _objectName: Commode
 --- !u!4 &812397684986126632 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1b2bcba711554bf43861668d29a3bf5d, type: 3}
@@ -272,8 +275,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dissolveMat: {fileID: 2100000, guid: 45cf78133ce0c164ebe4537cf2e5aa2d, type: 2}
   dissolveFinishMat: {fileID: 2100000, guid: 64c98047f6df49849a5c16a7caa7d5e7, type: 2}
-  _finalDissolveTime: 0.8
-  _finalDissolveThreshold: 0.8
 --- !u!114 &3121623523229410846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,7 +289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 1157736283336916783}
-  _destroySpeedPerSecond: 1
+  _pointsForDestruction: -1
 --- !u!65 &2822909768218911800
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -356,8 +357,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dissolveMat: {fileID: 2100000, guid: 45cf78133ce0c164ebe4537cf2e5aa2d, type: 2}
   dissolveFinishMat: {fileID: 2100000, guid: 64c98047f6df49849a5c16a7caa7d5e7, type: 2}
-  _finalDissolveTime: 0.8
-  _finalDissolveThreshold: 0.8
 --- !u!114 &5634545849460098441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,7 +371,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 1157736283336916783}
-  _destroySpeedPerSecond: 1
+  _pointsForDestruction: -1
 --- !u!65 &4618147387860379409
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -440,8 +439,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dissolveMat: {fileID: 2100000, guid: 45cf78133ce0c164ebe4537cf2e5aa2d, type: 2}
   dissolveFinishMat: {fileID: 2100000, guid: 64c98047f6df49849a5c16a7caa7d5e7, type: 2}
-  _finalDissolveTime: 0.8
-  _finalDissolveThreshold: 0.8
 --- !u!114 &1157736283336916783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,7 +453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 0}
-  _destroySpeedPerSecond: 1
+  _pointsForDestruction: -1
 --- !u!65 &4093245008765779142
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -524,8 +521,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dissolveMat: {fileID: 2100000, guid: 45cf78133ce0c164ebe4537cf2e5aa2d, type: 2}
   dissolveFinishMat: {fileID: 2100000, guid: 64c98047f6df49849a5c16a7caa7d5e7, type: 2}
-  _finalDissolveTime: 0.8
-  _finalDissolveThreshold: 0.8
 --- !u!114 &8493755979134330284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,7 +535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 1157736283336916783}
-  _destroySpeedPerSecond: 1
+  _pointsForDestruction: -1
 --- !u!65 &1384998751896889970
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -608,8 +603,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dissolveMat: {fileID: 2100000, guid: 45cf78133ce0c164ebe4537cf2e5aa2d, type: 2}
   dissolveFinishMat: {fileID: 2100000, guid: 64c98047f6df49849a5c16a7caa7d5e7, type: 2}
-  _finalDissolveTime: 0.8
-  _finalDissolveThreshold: 0.8
 --- !u!114 &8090731949732734492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -624,7 +617,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 1157736283336916783}
-  _destroySpeedPerSecond: 1
+  _pointsForDestruction: -1
 --- !u!65 &5113012499437492198
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -692,8 +685,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dissolveMat: {fileID: 2100000, guid: 45cf78133ce0c164ebe4537cf2e5aa2d, type: 2}
   dissolveFinishMat: {fileID: 2100000, guid: 64c98047f6df49849a5c16a7caa7d5e7, type: 2}
-  _finalDissolveTime: 0.8
-  _finalDissolveThreshold: 0.8
 --- !u!114 &1315436265048004059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -708,7 +699,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 1157736283336916783}
-  _destroySpeedPerSecond: 1
+  _pointsForDestruction: -1
 --- !u!65 &6588048547074317531
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -776,8 +767,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dissolveMat: {fileID: 2100000, guid: 45cf78133ce0c164ebe4537cf2e5aa2d, type: 2}
   dissolveFinishMat: {fileID: 2100000, guid: 64c98047f6df49849a5c16a7caa7d5e7, type: 2}
-  _finalDissolveTime: 0.8
-  _finalDissolveThreshold: 0.8
 --- !u!114 &6514954893322355139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -792,7 +781,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 1157736283336916783}
-  _destroySpeedPerSecond: 1
+  _pointsForDestruction: -1
 --- !u!65 &3866833819037520599
 BoxCollider:
   m_ObjectHideFlags: 0

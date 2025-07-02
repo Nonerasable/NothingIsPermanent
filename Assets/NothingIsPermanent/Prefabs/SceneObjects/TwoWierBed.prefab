@@ -364,6 +364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 2034200552291568814}
+  _pointsForDestruction: -1
 --- !u!65 &530877570690433250
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -402,6 +403,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a8cd65445eebde4491e207664db5d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _defaultPointForPartDestruction: 2
+  _PointsForFullDestruction: 20
+  _objectName: Two tier bed
 --- !u!1 &1756639607447655798 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -9041267756353341082, guid: 2e4fe7b562d23a847bef5f3e815d7fd6, type: 3}
@@ -462,6 +466,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 3647796934237357155}
+  _pointsForDestruction: -1
 --- !u!65 &6777126470975212104
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -543,6 +548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 2034200552291568814}
+  _pointsForDestruction: -1
 --- !u!65 &7026114127574132161
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -624,6 +630,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 3647796934237357155}
+  _pointsForDestruction: -1
 --- !u!65 &1119660529861636457
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -710,6 +717,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 3647796934237357155}
+  _pointsForDestruction: -1
 --- !u!65 &6068193317866535387
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -791,6 +799,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 2034200552291568814}
+  _pointsForDestruction: -1
 --- !u!65 &5093692787466472445
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -893,6 +902,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 3647796934237357155}
+  _pointsForDestruction: -1
 --- !u!1 &5661784238040135698 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3137722172632951806, guid: 2e4fe7b562d23a847bef5f3e815d7fd6, type: 3}
@@ -953,6 +963,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 1707907367529078757}
+  _pointsForDestruction: -1
 --- !u!65 &5806307506086002270
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1034,6 +1045,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 3647796934237357155}
+  _pointsForDestruction: -1
 --- !u!65 &6602292418961435839
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1115,6 +1127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 2034200552291568814}
+  _pointsForDestruction: -1
 --- !u!65 &8970516592562644792
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1196,6 +1209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 459069999379660309}
+  _pointsForDestruction: -1
 --- !u!65 &1364775260420877981
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1277,6 +1291,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 3647796934237357155}
+  _pointsForDestruction: -1
 --- !u!65 &2285325339669333560
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1358,6 +1373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 0
   _attachedTo: {fileID: 3647796934237357155}
+  _pointsForDestruction: -1
 --- !u!65 &8157975598117305860
 BoxCollider:
   m_ObjectHideFlags: 0

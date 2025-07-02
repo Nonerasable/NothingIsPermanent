@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a8cd65445eebde4491e207664db5d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _defaultPointForPartDestruction: 2
+  _PointsForFullDestruction: 4
+  _objectName: Metal door
 --- !u!1 &5463727856848229138
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,3 +214,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialType: 1
   _attachedTo: {fileID: 0}
+  _pointsForDestruction: -1

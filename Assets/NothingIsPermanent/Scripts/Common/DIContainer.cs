@@ -9,6 +9,7 @@ public class DIContainer : MonoBehaviour {
     [SerializeField] private LevelController _levelController;
     [SerializeField] private bool _isPlayerScene;
     [SerializeField] private string _mainMenuSceneName;
+    [SerializeField] private FloatingTextPool _floatingTextPool;
 
     public MicrobeColoring microbeColoring;
 
@@ -27,6 +28,7 @@ public class DIContainer : MonoBehaviour {
     public static DIContainer Inst => _inst;
     public InputSystem_Actions Actions => _actions;
     public LevelController LevelController => _levelController;
+    public FloatingTextPool FloatingTextPool => _floatingTextPool;
 
     private GameObject _player;
     private static DIContainer _inst;

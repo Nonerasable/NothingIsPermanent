@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 5960293886463449598}
   - component: {fileID: 6890903234522159170}
   - component: {fileID: 7845277249390947067}
+  - component: {fileID: 6962404540985100531}
   m_Layer: 0
   m_Name: GlobalManagers
   m_TagString: Untagged
@@ -147,6 +148,7 @@ MonoBehaviour:
   _levelController: {fileID: 7845277249390947067}
   _isPlayerScene: 1
   _mainMenuSceneName: MainMenuScene
+  _floatingTextPool: {fileID: 6962404540985100531}
   microbeColoring:
     _colorSettings:
     - material: 0
@@ -176,3 +178,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 840331f7fbed3a245ac86621f3d03aa4, type: 2}
   - {fileID: 11400000, guid: 28cbdd875a82aba449ba0b761d5e866b, type: 2}
   - {fileID: 11400000, guid: 40d0994ced338aa4f87fdf994c8d02c3, type: 2}
+--- !u!114 &6962404540985100531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6465926218315797413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb28476d1ac773448914e62f86f71cdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _floatingTextPrefab: {fileID: 7203860118607155697, guid: 51045d3ce09fece478181fdc249ba5dc, type: 3}

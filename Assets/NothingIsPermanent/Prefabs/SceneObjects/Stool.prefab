@@ -441,7 +441,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultPointForPartDestruction: 5
-  _PointsForFullDestruction: 1
+  _PointsForFullDestruction: 10
+  _objectName: Stool
 --- !u!1 &6212262457948909827 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2181743766629440291, guid: d169d6b200bb5c74e9d52a00e02098cd, type: 3}
