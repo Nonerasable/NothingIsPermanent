@@ -50,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defaultPointForPartDestruction: 3
   _PointsForFullDestruction: 10
+  _objectName: Test wooden table
 --- !u!1001 &1179241005778254899
 PrefabInstance:
   m_ObjectHideFlags: 0

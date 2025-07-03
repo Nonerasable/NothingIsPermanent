@@ -27,7 +27,7 @@ public class MicrobeController : MonoBehaviour {
                 _microbes.Add(microbe);
             
                 Microbe microbeScript = microbe.GetComponent<Microbe>();
-                microbeScript.Init(settings.MaxAffectedMaterial, _coloring.GetColor(settings.MaxAffectedMaterial));
+                microbeScript.SetType(settings.MaxAffectedMaterial, _coloring.GetColor(settings.MaxAffectedMaterial));
                 microbeScript.Collect();
             
                 _microbesByMaterial[(int)settings.MaxAffectedMaterial].Add(microbeScript);
@@ -63,7 +63,7 @@ public class MicrobeController : MonoBehaviour {
         // if all microbes are in use, upgrade first microbe
         Microbe microbeToUpgrade = _microbesByMaterial[idx][0];
         foreach (Microbe microbe in _microbesByMaterial[idx]) {
-            if (microbe.IsDestroyingNow) {
+            if (microbe.IsDestroyingNow || !microbe.IsCollected) {
                 continue;
             }
 
@@ -73,7 +73,7 @@ public class MicrobeController : MonoBehaviour {
 
         _microbesByMaterial[idx].Remove(microbeToUpgrade);
         
-        microbeToUpgrade.Upgrade(nextType, _coloring.GetColor(nextType));
+        microbeToUpgrade.SetType(nextType, _coloring.GetColor(nextType));
         _microbesByMaterial[(int)nextType].Add(microbeToUpgrade);
 
         TryUpdateUi(typeToUpgrade);

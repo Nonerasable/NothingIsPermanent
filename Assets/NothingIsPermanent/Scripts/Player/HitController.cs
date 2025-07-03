@@ -19,6 +19,10 @@ public class HitController : MonoBehaviour {
     
     private void OnTriggerEnter(Collider other) {
         Microbe microbe = other.gameObject.GetComponent<Microbe>();
+        if (!microbe) {
+            microbe = other.gameObject.transform.parent?.GetComponent<Microbe>();
+        }
+        
         if (!microbe || _seenMicrobes.Contains(microbe)) {
             return;
         }
@@ -28,6 +32,10 @@ public class HitController : MonoBehaviour {
 
     private void OnTriggerExit(Collider other) {
         Microbe microbe = other.gameObject.GetComponent<Microbe>();
+        if (!microbe) {
+            microbe = other.gameObject.transform.parent?.GetComponent<Microbe>();
+        }
+        
         if (!microbe || !_seenMicrobes.Contains(microbe)) {
             return;
         }

@@ -1,11 +1,15 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Random = System.Random;
 
 public class Microbe : MonoBehaviour {
     [SerializeField] [Min(0.1f)] private float _jumpingTime = 2f;
     [SerializeField] [Min(0.1f)] private float _jumpHeight = 0.3f;
     [SerializeField] [Min(0.1f)] private float _upwardsForceWhenJumpOff = 0.5f;
+
+    [SerializeField] private List<GameObject> _microbeViews;
 
     public bool IsDestroyingNow => _currentPart;
     public bool IsCollected => _isCollected;
@@ -14,6 +18,8 @@ public class Microbe : MonoBehaviour {
     private Rigidbody _rigidBody;
     private Collider _collider;
     private MeshRenderer _renderer;
+    private GameObject _currentView;
+    private Color _microbeColor;
     
     private DestructibleMaterialType _maxAffectedMaterial;
     private bool _isCollected = false;
@@ -27,14 +33,11 @@ public class Microbe : MonoBehaviour {
 
     private MicrobeProgressionController _progressionController;
     
-    public void Init(DestructibleMaterialType maxAffectedMaterial, Color color) {
+    public void SetType(DestructibleMaterialType maxAffectedMaterial, Color color) {
         _maxAffectedMaterial = maxAffectedMaterial;
-        _renderer.material.color = color;
-    }
-    
-    public void Upgrade(DestructibleMaterialType type, Color color) {
-        _maxAffectedMaterial = type;
-        _renderer.material.color = color;
+        _microbeColor = color;
+        
+        SelectView();
     }
 
     public void Collect() {
@@ -72,8 +75,6 @@ public class Microbe : MonoBehaviour {
 
     private void OnEnable() {
         _rigidBody = GetComponent<Rigidbody>();
-        _collider = GetComponent<Collider>();
-        _renderer = GetComponent<MeshRenderer>();
     }
 
     private void Start() {
@@ -105,6 +106,22 @@ public class Microbe : MonoBehaviour {
         _isJumpingToNextPart = false;
         StartDestructionInternal(targetPointWcs);
     }
+
+    private void SelectView() {
+        if (_currentView) {
+            _collider.enabled = false;
+            _renderer.enabled = false;
+        }
+        
+        int idx = (int)_maxAffectedMaterial;
+        
+        _currentView = _microbeViews[idx];
+        _collider = _currentView.GetComponent<Collider>();
+        _renderer = _currentView.GetComponent<MeshRenderer>();
+        
+        _renderer.enabled = !_isCollected;
+        _collider.enabled = !IsDestroyingNow && !_isCollected;
+    }
     
     Vector3 GetParabolaPoint(Vector3 start, Vector3 end, float height, float t)
     {
@@ -122,7 +139,7 @@ public class Microbe : MonoBehaviour {
         _rigidBody.isKinematic = true;
         _collider.enabled = false;
         
-        _currentPart.StartDestruction(destructionPoint, _renderer.material.color);
+        _currentPart.StartDestruction(destructionPoint, _microbeColor);
         _currentPart.OnStartJumpOf += HandlePartDestroyed;
     }
 
@@ -139,7 +156,13 @@ public class Microbe : MonoBehaviour {
         else {
             _rigidBody.isKinematic = false;
             _collider.enabled = true;
-            _rigidBody.linearVelocity = Vector3.up * _upwardsForceWhenJumpOff;
+            
+            Quaternion rotation = Quaternion.AngleAxis(UnityEngine.Random.Range(-20f, 20f), Vector3.right);
+            Quaternion rotation2 = Quaternion.AngleAxis(UnityEngine.Random.Range(-20f, 20f), Vector3.forward);
+            Vector3 dir = rotation * Vector3.up;
+            dir = rotation2 * dir;
+            
+            _rigidBody.AddForce(dir.normalized * _upwardsForceWhenJumpOff);
         }
     }
 }
