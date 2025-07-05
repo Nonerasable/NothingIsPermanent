@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
-using Random = System.Random;
 
 public class Microbe : MonoBehaviour {
     [SerializeField] [Min(0.1f)] private float _jumpingTime = 2f;
     [SerializeField] [Min(0.1f)] private float _jumpHeight = 0.3f;
     [SerializeField] [Min(0.1f)] private float _upwardsForceWhenJumpOff = 0.5f;
+    [SerializeField] private ParticleSystem _particleSystem;
+    [SerializeField] private Light _light;
 
     [SerializeField] private List<GameObject> _microbeViews;
 
@@ -16,7 +18,8 @@ public class Microbe : MonoBehaviour {
     public DestructibleMaterialType MaxAffectedMaterial => _maxAffectedMaterial;
 
     private Rigidbody _rigidBody;
-    private Collider _collider;
+    private MicrobeViewController _animator;
+    private List<Collider> _colliders = new();
     private MeshRenderer _renderer;
     private GameObject _currentView;
     private Color _microbeColor;
@@ -47,7 +50,9 @@ public class Microbe : MonoBehaviour {
 
         _isCollected = true;
         _rigidBody.isKinematic = true;
-        _collider.enabled = false;
+        _animator.SetCanUseAnimation(false);
+        
+        _colliders.ForEach(col => col.enabled = false);
         _renderer.enabled = false;
     }
 
@@ -57,6 +62,8 @@ public class Microbe : MonoBehaviour {
 
         _isCollected = false;
         _renderer.enabled = true;
+        _rigidBody.isKinematic = true;
+        _colliders.ForEach(col => col.enabled = false);
         
         _currentPart = part;
 
@@ -79,6 +86,10 @@ public class Microbe : MonoBehaviour {
 
     private void Start() {
         _progressionController = DIContainer.Inst.ProgressionController;
+
+        foreach (GameObject view in _microbeViews) {
+            view.GetComponent<MicrobeViewController>().Init(_rigidBody, _particleSystem, _light);
+        }
     }
 
     private void OnDestroy() {
@@ -109,18 +120,34 @@ public class Microbe : MonoBehaviour {
 
     private void SelectView() {
         if (_currentView) {
-            _collider.enabled = false;
+            _animator.SetCanUseAnimation(false);
+            _colliders.ForEach(col => col.enabled = false);
             _renderer.enabled = false;
         }
+
+        Gradient sukaBlya = new Gradient();
+        sukaBlya.SetKeys(
+            new GradientColorKey[]{new GradientColorKey(_microbeColor, 0f), new GradientColorKey(Color.white, 1f)}, 
+            new GradientAlphaKey[]{new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0f, 1f)});
+        
+        ParticleSystem.ColorOverLifetimeModule module = _particleSystem.colorOverLifetime;
+        module.color = sukaBlya;
+
+        _light.color = _microbeColor;
         
         int idx = (int)_maxAffectedMaterial;
         
         _currentView = _microbeViews[idx];
-        _collider = _currentView.GetComponent<Collider>();
+        _colliders = _currentView.GetComponents<Collider>().ToList();
+        _animator = _currentView.GetComponent<MicrobeViewController>();
         _renderer = _currentView.GetComponent<MeshRenderer>();
+
+        if (!IsDestroyingNow && !_isCollected) {
+            _animator.SetCanUseAnimation(true);
+        }
         
         _renderer.enabled = !_isCollected;
-        _collider.enabled = !IsDestroyingNow && !_isCollected;
+        _colliders.ForEach(col => col.enabled = !IsDestroyingNow && !_isCollected);
     }
     
     Vector3 GetParabolaPoint(Vector3 start, Vector3 end, float height, float t)
@@ -136,8 +163,6 @@ public class Microbe : MonoBehaviour {
     private void StartDestructionInternal(Vector3 destructionPoint) {
         transform.position = destructionPoint;
         transform.parent = _currentPart.transform;
-        _rigidBody.isKinematic = true;
-        _collider.enabled = false;
         
         _currentPart.StartDestruction(destructionPoint, _microbeColor);
         _currentPart.OnStartJumpOf += HandlePartDestroyed;
@@ -154,8 +179,9 @@ public class Microbe : MonoBehaviour {
             StartDestruction(nextToDestroy, nextToDestroy.gameObject.transform.position, true);
         }
         else {
+            _animator.SetCanUseAnimation(true);
             _rigidBody.isKinematic = false;
-            _collider.enabled = true;
+            _colliders.ForEach(col => col.enabled = true);
             
             Quaternion rotation = Quaternion.AngleAxis(UnityEngine.Random.Range(-20f, 20f), Vector3.right);
             Quaternion rotation2 = Quaternion.AngleAxis(UnityEngine.Random.Range(-20f, 20f), Vector3.forward);

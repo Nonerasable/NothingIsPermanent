@@ -7,6 +7,7 @@ public class MicrobeController : MonoBehaviour {
     [SerializeField] private List<MicrobeSettings> _microbeSettings;
     [SerializeField] private GameObject _microbePrefab;
     [SerializeField] private GameObject _flask;
+    [SerializeField] private Transform _flaskTip;
     
     private List<List<Microbe>> _microbesByMaterial = new();
     private List<GameObject> _microbes = new();
@@ -92,8 +93,9 @@ public class MicrobeController : MonoBehaviour {
             if (!microbe.IsCollected) {
                 continue;
             }
-            
-            microbe.StartDestruction(part, startPoint);
+
+            microbe.transform.position = _flaskTip.position;
+            microbe.StartDestruction(part, startPoint, true);
             DIContainer.Inst.ChangeMicrobeCollection(microbe.MaxAffectedMaterial, _microbesByMaterial[(int)microbe.MaxAffectedMaterial]);
             break;
         }
