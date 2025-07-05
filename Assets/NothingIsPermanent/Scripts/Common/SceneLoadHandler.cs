@@ -1,23 +1,16 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneLoadHandler : MonoBehaviour {
-
-    [SerializeField] private List<string> levelSceneNames;
+    public event Action<string> OnSceneLoaded;
     
     void Awake() {
+        SceneManager.sceneLoaded += HandleSceneLoaded;
         DontDestroyOnLoad(gameObject);
-        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        for (int i = 0; i < levelSceneNames.Count; i++) {
-            if (scene.name == levelSceneNames[i]) {
-                DIContainer.Inst.ShowLevelInfo(i);
-                return;
-            }
-        }
-        DIContainer.Inst.LoadTestPreset();
+    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode) {
+        OnSceneLoaded?.Invoke(scene.name);
     }
 }

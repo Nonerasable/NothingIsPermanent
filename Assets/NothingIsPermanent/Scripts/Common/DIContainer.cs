@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -7,9 +8,11 @@ public class DIContainer : MonoBehaviour {
     
     [SerializeField] private PlayerCanvas _playerUICanvasPrefab;
     [SerializeField] private LevelController _levelController;
-    [SerializeField] private bool _isPlayerScene;
+    [SerializeField] private List<string> levelSceneNames;
     [SerializeField] private string _mainMenuSceneName;
     [SerializeField] private FloatingTextPool _floatingTextPool;
+    [SerializeField] private SceneLoadHandler _sceneLoadHandler;
+    [SerializeField] private EventSystem _eventSystemPrefab;
 
     public MicrobeColoring microbeColoring;
 
@@ -18,6 +21,9 @@ public class DIContainer : MonoBehaviour {
         get => _player;
         set {
             _player = value;
+            if (_player == null) {
+                return;
+            }
             _player.GetComponent<MicrobeController>().SetupMicrobe(_currentLevelSettings?.MicrobeSettings);
             ProgressionController.UpdateUi();
         }
@@ -37,13 +43,17 @@ public class DIContainer : MonoBehaviour {
     private LevelSettings _currentLevelSettings;
     
     private void Awake() {
+        if (_inst != null) {
+            Destroy(gameObject);
+            return;
+        }
+        
         _actions = new();
         _actions.Enable();
         _inst = this;
 
-        if (_isPlayerScene) {
-            _currentUiCanvas = Instantiate(_playerUICanvasPrefab);
-        }
+        _currentUiCanvas = Instantiate(_playerUICanvasPrefab);
+        Instantiate(_eventSystemPrefab, transform);
 
         Actions.UI.Esc.performed += EscMenuPerformed;
         Actions.UI.Tab.performed += UpgradeMenuPerformed;
@@ -52,6 +62,9 @@ public class DIContainer : MonoBehaviour {
         _levelController.OnGameOver += HandleGameOver;
         _levelController.OnLevelWin += HandleGameWin;
         _levelController.OnLevelProgressUpdated += HandleLevelProgressUpdated;
+
+        _sceneLoadHandler.OnSceneLoaded += HandleSceneLoaded;
+        DontDestroyOnLoad(this.gameObject);
     }
     
     public void ShowLevelInfo(int levelIndex) {
@@ -59,8 +72,7 @@ public class DIContainer : MonoBehaviour {
         _levelController.SetupLevel(levelIndex);
         _currentLevelSettings = _levelController.GetCurrentLevelSettings();
         _currentUiCanvas.ShowLevelInfo(_currentLevelSettings);
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        EnableUICursor();
         
         ProgressionController.Reset();
         ProgressionController.Setup(_currentLevelSettings, _currentUiCanvas.UpgradePanel);
@@ -70,42 +82,38 @@ public class DIContainer : MonoBehaviour {
         _currentUiCanvas.StartLevel();
         _levelController.StartCurrentLevel();
         _actions.Player.Enable();
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        DisableUICursor();
     }
 
     public void OpenEscMenu() {
         _actions.Player.Disable();
         Time.timeScale = 0f;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        EnableUICursor();
         _currentUiCanvas.ShowEscMenu();
     }
 
     public void OpenUpgradePanel() {
         _actions.Player.Disable();
         Time.timeScale = 0f;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        EnableUICursor();
         _currentUiCanvas.ShowUpgradePanel();
     }
 
     public void Resume() {
         _actions.Player.Enable();
         Time.timeScale = 1;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        DisableUICursor();
         _currentUiCanvas.HidePausePanels();
     }
 
     public void LoadMainMenu() {
-        SceneManager.LoadScene(_mainMenuSceneName);
+        LoadScene(_mainMenuSceneName);
         _currentLevelSettings = null;
     }
 
     public void RestartCurrentLevel() {
         var sceneName = _levelController.GetCurrentLevelSettings().LevelSceneName;
-        SceneManager.LoadScene(sceneName);
+        LoadScene(sceneName);
     }
 
     public void StartNextLevel() {
@@ -115,12 +123,11 @@ public class DIContainer : MonoBehaviour {
             return;
         }
         var sceneName = nextLevelSettings.LevelSceneName;
-        SceneManager.LoadScene(sceneName);
+        LoadScene(sceneName);
     }
 
     public void LoadTestPreset() {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        DisableUICursor();
         _currentLevelSettings = null;
         
         ProgressionController.Reset();
@@ -150,6 +157,11 @@ public class DIContainer : MonoBehaviour {
         _currentUiCanvas.PlayerPanel.UpdateMicrobeAmmo(collectedMicrobeCount, microbeList.Count, destructibleMaterialType);
     }
 
+    private void LoadScene(string levelSceneName) {
+        ProgressionController.Reset();
+        SceneManager.LoadScene(levelSceneName);
+    }
+
     private void EscMenuPerformed(InputAction.CallbackContext obj) {
         if (Time.timeScale == 0f) {
             Resume();
@@ -174,15 +186,13 @@ public class DIContainer : MonoBehaviour {
 
     private void HandleGameOver() {
         _actions.Player.Disable();
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        EnableUICursor();
         _currentUiCanvas.ShowGameOverPanel();
     }
 
     private void HandleGameWin() {
         _actions.Player.Disable();
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        EnableUICursor();
         _currentUiCanvas.ShowWinLevelPanel();
     }
 
@@ -192,5 +202,29 @@ public class DIContainer : MonoBehaviour {
             return;
         }
         _currentUiCanvas.UpdateProgress(levelProgress, levelSettings.LevelGoal);
+    }
+
+    private void EnableUICursor() {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+    
+    private void DisableUICursor() {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void HandleSceneLoaded(string sceneName) {
+        _currentUiCanvas.gameObject.SetActive(sceneName != _mainMenuSceneName);
+        for (int i = 0; i < levelSceneNames.Count; i++) {
+            if (sceneName == levelSceneNames[i]) {
+                ShowLevelInfo(i);
+                return;
+            }
+        }
+
+        if (sceneName != _mainMenuSceneName) {
+            LoadTestPreset();
+        }
     }
 }

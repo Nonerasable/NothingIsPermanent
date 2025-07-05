@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -21,6 +22,10 @@ public class PlayerController : MonoBehaviour
         _actions = DIContainer.Inst.Actions.Player;
         DIContainer.Inst.Player = gameObject;
         _characterController = GetComponent<CharacterController>();
+    }
+
+    private void OnDestroy() {
+        DIContainer.Inst.Player = null;
     }
 
     void Update()

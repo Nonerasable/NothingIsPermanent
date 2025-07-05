@@ -20,11 +20,13 @@ public class PlayerCanvas : MonoBehaviour {
         _playerPanel.gameObject.SetActive(true);
         _escPanel.gameObject.SetActive(false);
         _upgradePanel.gameObject.SetActive(false);
+        DontDestroyOnLoad(gameObject);
     }
 
     public void ShowLevelInfo(LevelSettings levelSettings) {
         _startLevelPanel.gameObject.SetActive(true);
         _playerPanel.gameObject.SetActive(false);
+        _escPanel.gameObject.SetActive(false);
         _startLevelPanel.UpdateLevelInfo(levelSettings);
     }
 
