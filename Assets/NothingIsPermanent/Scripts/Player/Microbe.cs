@@ -57,6 +57,8 @@ public class Microbe : MonoBehaviour {
 
         _isCollected = false;
         _renderer.enabled = true;
+        _rigidBody.isKinematic = true;
+        _collider.enabled = false;
         
         _currentPart = part;
 
@@ -136,8 +138,6 @@ public class Microbe : MonoBehaviour {
     private void StartDestructionInternal(Vector3 destructionPoint) {
         transform.position = destructionPoint;
         transform.parent = _currentPart.transform;
-        _rigidBody.isKinematic = true;
-        _collider.enabled = false;
         
         _currentPart.StartDestruction(destructionPoint, _microbeColor);
         _currentPart.OnStartJumpOf += HandlePartDestroyed;

@@ -117,6 +117,7 @@ MonoBehaviour:
     MaxAffectedMaterial: 1
   _microbePrefab: {fileID: 5410983091850267481, guid: 9236500016bc95843bae58854bb632f6, type: 3}
   _flask: {fileID: 2614712488056197835}
+  _flaskTip: {fileID: 6321662222033103374}
 --- !u!65 &860600243365301711
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -138,6 +139,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2.4, z: 1}
   m_Center: {x: 0, y: 0, z: 0.75}
+--- !u!1 &5165636046156675873
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6321662222033103374}
+  m_Layer: 3
+  m_Name: tip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6321662222033103374
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5165636046156675873}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.009, y: 0.088, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3387414502943115377}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5385853704891994178
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,7 +569,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3f1f1517b036033468ea3d6dcbf2f732, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6321662222033103374}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f1f1517b036033468ea3d6dcbf2f732, type: 3}
 --- !u!1 &2614712488056197835 stripped
